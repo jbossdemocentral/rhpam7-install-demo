@@ -1,0 +1,8 @@
+/.dockerignore
+/Dockerfile
+/.index
+/.niogit
+/.security
+/.kie-wb-playground
+
+
