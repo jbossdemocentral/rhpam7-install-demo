@@ -10,8 +10,8 @@ SERVER_CONF=$JBOSS_HOME/standalone/configuration/
 SERVER_BIN=$JBOSS_HOME/bin
 SRC_DIR=./installs
 SUPPORT_DIR=./support
-DM_DECISION_CENTRAL=rhba-7.0.0.ER1-business-central-eap7-deployable.zip
-DM_KIE_SERVER=rhba-7.0.0.ER1-kie-server-ee7.zip
+PAM_BUSINESS_CENTRAL=rhba-7.0.0.ER2-business-central-eap7-deployable.zip
+PAM_KIE_SERVER=rhba-7.0.0.ER2-kie-server-ee7.zip
 EAP=jboss-eap-7.1.0.zip
 #EAP_PATCH=jboss-eap-6.4.7-patch.zip
 VERSION=7.0
@@ -20,24 +20,24 @@ VERSION=7.0
 clear
 
 echo
-echo "#################################################################"
-echo "##                                                             ##"
-echo "##  Setting up the ${DEMO}       ##"
-echo "##                                                             ##"
-echo "##                                                             ##"
-echo "##     ####  #   # ####    #   #   #####    #####              ##"
-echo "##     #   # #   # #   #  # # # #     #     #   #              ##"
-echo "##     ####  ##### #   #  #  #  #   ###     #   #              ##"
-echo "##     # #   #   # #   #  #     #   #       #   #              ##"
-echo "##     #  #  #   # ####   #     #  #     #  #####              ##"
-echo "##                                                             ##"
-echo "##  brought to you by,                                         ##"
-echo "##             ${AUTHORS}                                         ##"
-echo "##                                                             ##"
-echo "##                                                             ##"
-echo "##  ${PROJECT}      ##"
-echo "##                                                             ##"
-echo "#################################################################"
+echo "######################################################################"
+echo "##                                                                  ##"
+echo "##  Setting up the ${DEMO}                                 ##"
+echo "##                                                                  ##"
+echo "##                                                                  ##"
+echo "##     ####  #   # ####   ###   #   #   #####    #####              ##"
+echo "##     #   # #   # #   # #   # # # # #     #     #   #              ##"
+echo "##     ####  ##### ####  ##### #  #  #   ###     #   #              ##"
+echo "##     # #   #   # #     #   # #     #   #       #   #              ##"
+echo "##     #  #  #   # #     #   # #     #  #     #  #####              ##"
+echo "##                                                                  ##"
+echo "##  brought to you by,                                              ##"
+echo "##             ${AUTHORS}                                              ##"
+echo "##                                                                  ##"
+echo "##                                                                  ##"
+echo "##  ${PROJECT}         ##"
+echo "##                                                                  ##"
+echo "######################################################################"
 echo
 
 # make some checks first before proceeding.
@@ -61,21 +61,21 @@ fi
 #	exit
 #fi
 
-if [ -r $SRC_DIR/$DM_DECISION_CENTRAL ] || [ -L $SRC_DIR/$DM_DECISION_CENTRAL ]; then
+if [ -r $SRC_DIR/$PAM_BUSINESS_CENTRAL ] || [ -L $SRC_DIR/$PAM_BUSINESS_CENTRAL ]; then
 		echo Product sources are present...
 		echo
 else
-		echo Need to download $DM_DECISION_CENTRAL zip from http://developers.redhat.com
+		echo Need to download $PAM_BUSINESS_CENTRAL zip from http://developers.redhat.com
 		echo and place it in the $SRC_DIR directory to proceed...
 		echo
 		exit
 fi
 
-if [ -r $SRC_DIR/$DM_KIE_SERVER ] || [ -L $SRC_DIR/$DM_KIE_SERVER ]; then
+if [ -r $SRC_DIR/$PAM_KIE_SERVER ] || [ -L $SRC_DIR/$PAM_KIE_SERVER ]; then
 		echo Product sources are present...
 		echo
 else
-		echo Need to download $DM_KIE_SERVER zip from http://developers.redhat.com
+		echo Need to download $PAM_KIE_SERVER zip from http://developers.redhat.com
 		echo and place it in the $SRC_DIR directory to proceed...
 		echo
 		exit
@@ -87,7 +87,7 @@ cp support/docker/.dockerignore .
 echo Starting Docker build.
 echo
 
-docker build -t jbossdemocentral/rhba7-install-demo .
+docker build -t jbossdemocentral/rhpam7-install-demo .
 
 if [ $? -ne 0 ]; then
         echo
@@ -102,17 +102,17 @@ echo
 rm Dockerfile
 
 echo
-echo "================================================================================="
-echo "=                                                                               ="
-echo "=  You can now start the $PRODUCT in a Docker container with:   ="
-echo "=                                                                               ="
-echo "=  docker run -it -p 8080:8080 -p 9990:9990 jbossdemocentral/rhba7-install-demo ="
-echo "=                                                                               ="
-echo "=  Login into business central at:                                              ="
-echo "=                                                                               ="
-echo "=    http://localhost:8080/decision-central  (u:dmAdmin / p:redhatdm1!)         ="
-echo "=                                                                               ="
-echo "=                                                                               ="
-echo "=  $PRODUCT $VERSION $DEMO Setup Complete.                    ="
-echo "=                                                                               ="
-echo "================================================================================="
+echo "=================================================================================="
+echo "=                                                                                ="
+echo "=  You can now start the $PRODUCT in a Docker container with: ="
+echo "=                                                                                ="
+echo "=  docker run -it -p 8080:8080 -p 9990:9990 jbossdemocentral/rhpam7-install-demo ="
+echo "=                                                                                ="
+echo "=  Login into Business Central at:                                               ="
+echo "=                                                                                ="
+echo "=    http://localhost:8080/business-central  (u:pamAdmin / p:redhatpam1!)        ="
+echo "=                                                                                ="
+echo "=                                                                                ="
+echo "=  $PRODUCT $VERSION $DEMO Setup Complete.                  ="
+echo "=                                                                                ="
+echo "=================================================================================="

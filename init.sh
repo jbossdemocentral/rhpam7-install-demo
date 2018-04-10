@@ -20,24 +20,24 @@ VERSION=7.0
 clear
 
 echo
-echo "#################################################################"
-echo "##                                                             ##"
-echo "##  Setting up the ${DEMO}       ##"
-echo "##                                                             ##"
-echo "##                                                             ##"
-echo "##     ####  #   # ####    #   #   #####    #####              ##"
-echo "##     #   # #   # #   #  # # # #     #     #   #              ##"
-echo "##     ####  ##### #   #  #  #  #   ###     #   #              ##"
-echo "##     # #   #   # #   #  #     #   #       #   #              ##"
-echo "##     #  #  #   # ####   #     #  #     #  #####              ##"
-echo "##                                                             ##"
-echo "##  brought to you by,                                         ##"
-echo "##             ${AUTHORS}                                         ##"
-echo "##                                                             ##"
-echo "##                                                             ##"
-echo "##  ${PROJECT}      ##"
-echo "##                                                             ##"
-echo "#################################################################"
+echo "######################################################################"
+echo "##                                                                  ##"
+echo "##  Setting up the ${DEMO}                                 ##"
+echo "##                                                                  ##"
+echo "##                                                                  ##"
+echo "##     ####  #   # ####   ###   #   #   #####    #####              ##"
+echo "##     #   # #   # #   # #   # # # # #     #     #   #              ##"
+echo "##     ####  ##### ####  ##### #  #  #   ###     #   #              ##"
+echo "##     # #   #   # #     #   # #     #   #       #   #              ##"
+echo "##     #  #  #   # #     #   # #     #  #     #  #####              ##"
+echo "##                                                                  ##"
+echo "##  brought to you by,                                              ##"
+echo "##             ${AUTHORS}                                              ##"
+echo "##                                                                  ##"
+echo "##                                                                  ##"
+echo "##  ${PROJECT}         ##"
+echo "##                                                                  ##"
+echo "######################################################################"
 echo
 
 # make some checks first before proceeding.
@@ -146,13 +146,13 @@ touch $SERVER_DIR/kie-server.war.dodeploy
 echo
 echo "  - enabling demo accounts setup..."
 echo
-$JBOSS_HOME/bin/add-user.sh -a -r ApplicationRealm -u bamAdmin -p redhatbam1! -ro analyst,admin,manager,user,kie-server,kiemgmt,rest-all --silent
+$JBOSS_HOME/bin/add-user.sh -a -r ApplicationRealm -u pamAdmin -p redhatpam1! -ro analyst,admin,manager,user,kie-server,kiemgmt,rest-all --silent
 $JBOSS_HOME/bin/add-user.sh -a -r ApplicationRealm -u kieserver -p kieserver1! -ro kie-server --silent
 
 
-#echo "  - setting up standalone.xml configuration adjustments..."
-#echo
-#cp $SUPPORT_DIR/standalone-full.xml $SERVER_CONF/standalone.xml
+echo "  - setting up standalone.xml configuration adjustments..."
+echo
+cp $SUPPORT_DIR/standalone-full.xml $SERVER_CONF/standalone.xml
 
 echo "  - setup email notification users..."
 echo
@@ -165,7 +165,7 @@ chmod u+x $JBOSS_HOME/bin/standalone.sh
 
 echo "You can now start the $PRODUCT with $SERVER_BIN/standalone.sh"
 echo
-echo "Login to http://localhost:8080/business-central   (u:bamAdmin / p:redhatbam1!)"
+echo "Login to http://localhost:8080/business-central   (u:pamAdmin / p:redhatpam1!)"
 echo
 
 echo "$PRODUCT $VERSION $DEMO Setup Complete."

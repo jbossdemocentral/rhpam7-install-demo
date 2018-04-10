@@ -10,7 +10,7 @@ ENV JBOSS_HOME $HOME/jboss-eap-7.1
 ENV BA_VERSION_MAJOR 7
 ENV BA_VERSION_MINOR 0
 ENV BA_VERSION_MICRO 0
-ENV BA_VERSION_PATCH ER1
+ENV BA_VERSION_PATCH ER2
 
 ENV EAP_VERSION_MAJOR 7
 ENV EAP_VERSION_MINOR 1
@@ -36,9 +36,9 @@ RUN unzip -qo /opt/jboss/$EAP_ARCHIVE -d $HOME && \
     rm -rf /opt/jboss/$BA_BUSINESS_CENTRAL /opt/jboss/$BA_KIE_SERVER /opt/jboss/$EAP_ARCHIVE $JBOSS_HOME/standalone/configuration/standalone_xml_history/
 
 # Add support files
-RUN $JBOSS_HOME/bin/add-user.sh -a -r ApplicationRealm -u bamAdmin -p redhatbam1! -ro analyst,admin,manager,user,kie-server,kiemgmt,rest-all --silent  && \
+RUN $JBOSS_HOME/bin/add-user.sh -a -r ApplicationRealm -u pamAdmin -p redhatpam1! -ro analyst,admin,manager,user,kie-server,kiemgmt,rest-all --silent  && \
   $JBOSS_HOME/bin/add-user.sh -a -r ApplicationRealm -u kieserver -p kieserver1! -ro kie-server --silent
-#COPY support/standalone-full.xml $JBOSS_HOME/standalone/configuration/
+COPY support/standalone-full.xml $JBOSS_HOME/standalone/configuration/
 COPY support/userinfo.properties $JBOSS_HOME/standalone/deployments/business-central.war/WEB-INF/classes/
 
 # Swtich back to root user to perform cleanup

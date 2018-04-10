@@ -5,8 +5,8 @@ Clear-Host
 $PROJECT_HOME = $PSScriptRoot
 $DEMO="Install Demo"
 $AUTHORS="Red Hat"
-$PROJECT="git@github.com:jbossdemocentral/rhdm7-install-demo.git"
-$PRODUCT="Red Hat Decision Manager"
+$PROJECT="git@github.com:jbossdemocentral/rhpam7-install-demo.git"
+$PRODUCT="Red Hat Procss Automation Manager"
 $TARGET="$PROJECT_HOME\target"
 $JBOSS_HOME="$TARGET\jboss-eap-7.1"
 $SERVER_DIR="$JBOSS_HOME\standalone\deployments\"
@@ -15,32 +15,32 @@ $SERVER_BIN="$JBOSS_HOME\bin"
 $SRC_DIR="$PROJECT_HOME\installs"
 $SUPPORT_DIR="$PROJECT_HOME\support"
 $PRJ_DIR="$PROJECT_HOME\projects"
-$DM_DECISION_CENTRAL="rhdm-7.0.0.GA-decision-central-eap7-deployable.zip"
-$DM_KIE_SERVER="rhdm-7.0.0.GA-kie-server-ee7.zip"
+$PAM_BUSINES_CENTRAL="rhba-7.0.0.ER2-business-central-eap7-deployable.zip"
+$DM_KIE_SERVER="rhpam-7.0.0.ER2-kie-server-ee7.zip"
 $EAP="jboss-eap-7.1.0.zip"
 #$EAP_PATCH="jboss-eap-6.4.7-patch.zip"
 $VERSION="7.0"
 
 set NOPAUSE=true
 
-Write-Host "#################################################################"
-Write-Host "##                                                             ##"
-Write-Host "##  Setting up the ${DEMO}       ##"
-Write-Host "##                                                             ##"
-Write-Host "##                                                             ##"
-Write-Host "##     ####  #   # ####    #   #   #####    #####              ##"
-Write-Host "##     #   # #   # #   #  # # # #     #     #   #              ##"
-Write-Host "##     ####  ##### #   #  #  #  #   ###     #   #              ##"
-Write-Host "##     # #   #   # #   #  #     #   #       #   #              ##"
-Write-Host "##     #  #  #   # ####   #     #  #     #  #####              ##"
-Write-Host "##                                                             ##"
-Write-Host "##  brought to you by,                                         ##"
-Write-Host "##             %AUTHORS%                                         ##"
-Write-Host "##                                                             ##"
-Write-Host "##                                                             ##"
-Write-Host "##  %PROJECT%      ##"
-Write-Host "##                                                             ##"
-Write-Host "#################################################################`n"
+Write-Host "######################################################################"
+Write-Host "##                                                                  ##"
+Write-Host "##  Setting up the ${DEMO}            ##"
+Write-Host "##                                                                  ##"
+Write-Host "##                                                                  ##"
+Write-Host "##     ####  #   # ####   ###   #   #   #####    #####              ##"
+Write-Host "##     #   # #   # #   # #   # # # # #     #     #   #              ##"
+Write-Host "##     ####  ##### ####  ##### #  #  #   ###     #   #              ##"
+Write-Host "##     # #   #   # #     #   # #     #   #       #   #              ##"
+Write-Host "##     #  #  #   # #     #   # #     #  #     #  #####              ##"
+Write-Host "##                                                                  ##"
+Write-Host "##  brought to you by,                                              ##"
+Write-Host "##             %AUTHORS%                                             ##"
+Write-Host "##                                                                  ##"
+Write-Host "##                                                                  ##"
+Write-Host "##  %PROJECT%           ##"
+Write-Host "##                                                                  ##"
+Write-Host "######################################################################`n"
 
 
 If (Test-Path "$SRC_DIR\$EAP") {
@@ -95,7 +95,7 @@ If (Test-Path "$SRC_DIR\$DM_KIE_SERVER") {
 if ((Get-Command "7z.exe" -ErrorAction SilentlyContinue) -eq $null)
 {
    Write-Host "The '7z.exe' command is required but not available. Please install 7-Zip.`n"
-	 Write-Host "7-Zip is used to overcome the Windows 260 character limit on paths while extracting the Red Hat Decision Manager ZIP file.`n"
+	 Write-Host "7-Zip is used to overcome the Windows 260 character limit on paths while extracting the Red Hat Process Automation Manager ZIP file.`n"
 	 Write-Host "7-Zip can be donwloaded here: http://www.7-zip.org/download.html`n"
 	 Write-Host "Please make sure to add '7z.exe' to your 'PATH' after installation.`n"
    exit
@@ -137,30 +137,30 @@ If ($patchProcess.ExitCode -ne 0) {
 Write-Host "JBoss EAP patch applied succesfully!`n"
 #>
 
-Write-Host "Deploying Decision Manager Decision Central now..."
+Write-Host "Deploying Process Automation Manager Business Central now..."
 # Using 7-Zip. This currently seems to be the only way to overcome the Windows 260 character path limit.
-$argList = "x -o$TARGET -y $SRC_DIR\$DM_DECISION_CENTRAL"
+$argList = "x -o$TARGET -y $SRC_DIR\$PAM_BUSINESS_CENTRAL"
 $unzipProcess = (Start-Process -FilePath 7z.exe -ArgumentList $argList -Wait -PassThru -NoNewWindow)
 
 If ($unzipProcess.ExitCode -ne 0) {
-	Write-Error "Error occurred during Decision Manager Decision Central installation."
+	Write-Error "Error occurred during Process Automation Manager Business Central installation."
 	exit
 }
 
-Write-Host "Deploying Decision Manager Decision Server now..."
+Write-Host "Deploying Process Automation Manager Process Server now..."
 # Using 7-Zip. This currently seems to be the only way to overcome the Windows 260 character path limit.
 $argList = "x -o$JBOSS_HOME\standalone\deployments -y $SRC_DIR\$DM_KIE_SERVER"
 $unzipProcess = (Start-Process -FilePath 7z.exe -ArgumentList $argList -Wait -PassThru -NoNewWindow)
 
 If ($unzipProcess.ExitCode -ne 0) {
-	Write-Error "Error occurred during Decision Manager Decision Server installation."
+	Write-Error "Error occurred during Process Automation Manager Process Server installation."
 	exit
 }
 New-Item -ItemType file $JBOSS_HOME\standalone\deployments\kie-server.war.dodeploy
 Write-Host ""
 
 Write-Host "- enabling demo accounts setup ...`n"
-$argList1 = "-a -r ApplicationRealm -u dmAdmin -p 'redhatdm1!' -ro 'analyst,admin,manager,user,kie-server,kiemgmt,rest-all' --silent"
+$argList1 = "-a -r ApplicationRealm -u pamAdmin -p 'redhatpam1!' -ro 'analyst,admin,manager,user,kie-server,kiemgmt,rest-all' --silent"
 $argList2 = "-a -r ApplicationRealm -u kieserver -p 'kieserver1!' -ro 'kie-server' --silent"
 try {
 	Invoke-Expression "$JBOSS_HOME\bin\add-user.ps1 $argList1"

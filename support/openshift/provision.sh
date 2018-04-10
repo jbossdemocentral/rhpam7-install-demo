@@ -28,7 +28,7 @@ function usage() {
     echo "   idle                     Make all demo services idle"
     echo
     echo "DEMOS:"
-    echo "   rhdm7-install            Red Hat Decision Manager Install demo"
+    echo "   rhpam7-install            Red Hat Process Automation Install demo"
     echo
     echo "OPTIONS:"
     echo "   --user [username]         The admin user for the demo projects. mandatory if logged in as system:admin"
@@ -152,13 +152,13 @@ OPENSHIFT_USER=${ARG_USERNAME:-$LOGGEDIN_USER}
 
 # Project name needs to be unique across OpenShift Online
 PRJ_SUFFIX=${ARG_PROJECT_SUFFIX:-`echo $OPENSHIFT_USER | sed -e 's/[^-a-z0-9]/-/g'`}
-PRJ=("rhdm7-install-$PRJ_SUFFIX" "RHDM7 Install Demo" "Red Hat Decision Manager 7 Install Demo")
+PRJ=("rhpam7-install-$PRJ_SUFFIX" "RHPAM7 Install Demo" "Red Hat Process Automation Manager 7 Install Demo")
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # KIE Parameters
-KIE_ADMIN_USER=dmAdmin
-KIE_ADMIN_PWD=redhatdm1!
+KIE_ADMIN_USER=pamAdmin
+KIE_ADMIN_PWD=redhatpam1!
 KIE_SERVER_CONTROLLER_USER=kieserver
 KIE_SERVER_CONTROLLER_PWD=kieserver1!
 KIE_SERVER_USER=kieserver
@@ -169,7 +169,7 @@ KIE_SERVER_PWD=kieserver1!
 # DEMO MATRIX                                                                  #
 ################################################################################
 case $ARG_DEMO in
-    rhdm7-install)
+    rhpam7-install)
       DEMO_NAME=${PRJ[2]}
 	    ;;
     *)
@@ -241,24 +241,27 @@ function create_projects() {
 
 function import_imagestreams_and_templates() {
   echo_header "Importing Image Streams"
-  oc create -f https://raw.githubusercontent.com/jboss-container-images/rhdm-7-openshift-image/rhdm70-dev/rhdm70-image-streams.yaml
+  oc create -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/rhpam70-dev/rhpam70-image-streams.yaml
 
   echo_header "Importing Templates"
-  oc create -f https://raw.githubusercontent.com/jboss-container-images/rhdm-7-openshift-image/rhdm70-dev/templates/rhdm70-full.yaml
-  oc create -f https://raw.githubusercontent.com/jboss-container-images/rhdm-7-openshift-image/rhdm70-dev/templates/rhdm70-kieserver.yaml
-  oc create -f https://raw.githubusercontent.com/jboss-container-images/rhdm-7-openshift-image/rhdm70-dev/templates/rhdm70-kieserver-basic-s2i.yaml
-  oc create -f https://raw.githubusercontent.com/jboss-container-images/rhdm-7-openshift-image/rhdm70-dev/templates/rhdm70-kieserver-https-s2i.yaml
+  oc create -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/rhpam70-dev/businesscentral/image.yaml
+  oc create -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/rhpam70-dev/businesscentral-monitoring/image.yaml
+  oc create -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/rhpam70-dev/kieserver/image.yaml
+  oc create -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/rhpam70-dev/controller/image.yaml
+  oc create -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/rhpam70-dev/smartrouter/image.yaml
+  oc create -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/rhpam70-dev/elasticsearch/image.yaml
 }
 
 
 function import_secrets_and_service_account() {
   echo_header "Importing secrets and service account."
-  oc create -f https://raw.githubusercontent.com/jboss-container-images/rhdm-7-openshift-image/rhdm70-dev/decisioncentral-app-secret.yaml
-  oc create -f https://raw.githubusercontent.com/jboss-container-images/rhdm-7-openshift-image/rhdm70-dev/kieserver-app-secret.yaml
+  #oc create -f https://raw.githubusercontent.com/jboss-container-images/rhdm-7-openshift-image/rhdm70-dev/decisioncentral-app-secret.yaml
+  #oc create -f https://raw.githubusercontent.com/jboss-container-images/rhdm-7-openshift-image/rhdm70-dev/kieserver-app-secret.yaml
+  oc create -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/rhpam70-dev/example-app-secret-template.yaml
 }
 
 function create_application() {
-  echo_header "Creating Decision Manager 7 Application config."
+  echo_header "Creating Process Automation Manager 7 Application config."
 
   IMAGE_STREAM_NAMESPACE="openshift"
 
@@ -266,7 +269,7 @@ function create_application() {
     IMAGE_STREAM_NAMESPACE=${PRJ[0]}
   fi
 
-  oc new-app --template=rhdm70-full-persistent \
+  oc new-app --template=rhpam70-full-persistent \
 			-p APPLICATION_NAME="$ARG_DEMO" \
 			-p IMAGE_STREAM_NAMESPACE="$IMAGE_STREAM_NAMESPACE" \
 			-p KIE_ADMIN_USER="$KIE_ADMIN_USER" \
@@ -277,7 +280,7 @@ function create_application() {
 			-p KIE_SERVER_PWD="$KIE_SERVER_PWD" \
 			-p MAVEN_REPO_USERNAME="$KIE_ADMIN_USER" \
 			-p MAVEN_REPO_PASSWORD="$KIE_ADMIN_PWD" \
-      -p DECISION_CENTRAL_VOLUME_CAPACITY="$ARG_PV_CAPACITY"
+      -p BUSINESS_CENTRAL_VOLUME_CAPACITY="$ARG_PV_CAPACITY"
 
 }
 
