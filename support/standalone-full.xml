@@ -37,6 +37,11 @@
       <property name="org.kie.example" value="true"/>
       <property name="org.jbpm.designer.perspective" value="full"/>
       <property name="designerdataobjects" value="false"/>
+      <!-- Store data in JBoss EAP directories. -->
+      <property name="org.uberfire.nio.git.dir" value="${jboss.home.dir}/bin"/>
+      <property name="org.kie.server.repo" value="${jboss.server.data.dir}"/>
+      <property name="org.uberfire.metadata.index.dir" value="${jboss.home.dir}/bin"/>
+      <property name="org.guvnor.m2repo.dir" value="${jboss.home.dir}/bin"/>
 <!--Please uncomment the following properties to make KIE Server to be managed by Business Central
     Please also uncomment the default user and password which defined in standalone/configuration/application-roles.properties
     and application-users.properties-->
