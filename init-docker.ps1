@@ -5,7 +5,7 @@ Clear-Host
 $PROJECT_HOME = $PSScriptRoot
 $DEMO="Install Demo"
 $AUTHORS="Red Hat"
-$PROJECT="git@github.com:jbossdemocentral/rhdm7-install-demo.git"
+$PROJECT="git@github.com:jbossdemocentral/rhpam7-install-demo.git"
 $PRODUCT="Red Hat Process Automation Manager"
 $SRC_DIR="$PROJECT_HOME\installs"
 $SUPPORT_DIR="$PROJECT_HOME\support"

@@ -1,8 +1,8 @@
 #!/bin/sh
 DEMO="Install Demo"
 AUTHORS="Red Hat"
-PROJECT="git@github.com:jbossdemocentral/rhba7-install-demo.git"
-PRODUCT="Red Hat Business Automation"
+PROJECT="git@github.com:jbossdemocentral/rhpam7-install-demo.git"
+PRODUCT="Red Hat Process Automation Manager"
 TARGET=./target
 JBOSS_HOME=$TARGET/jboss-eap-7.1
 SERVER_DIR=$JBOSS_HOME/standalone/deployments
