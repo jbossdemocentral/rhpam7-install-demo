@@ -1,7 +1,7 @@
 Download the following from http://developers.redhat.com
 
  * EAP zip (jboss-eap-7.1.0.zip)
- * Business Automation Manager: Decision Central deployable (rhba-7.0.0.ER2-business-central-eap7-deployable.zip)
- * Business Automation Manager: Process Server (KIE Server) deployable (rhba-7.0.0.ER2-kie-server-ee7.zip)
+ * Business Automation Manager: Decision Central deployable (rhpam-7.0.0.ER3-business-central-eap7-deployable.zip)
+ * Business Automation Manager: Process Server (KIE Server) deployable (rhpam-7.0.0.ER3-kie-server-ee7.zip)
 
 and copy to this directory for the init.sh and init.ps1 scripts to work.
