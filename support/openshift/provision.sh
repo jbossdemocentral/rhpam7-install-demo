@@ -1,4 +1,4 @@
-  #!/bin/sh
+    #!/bin/sh
 #!/bin/bash
 set -e
 
@@ -244,12 +244,14 @@ function import_imagestreams_and_templates() {
   oc create -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/rhpam70-dev/rhpam70-image-streams.yaml
 
   echo_header "Importing Templates"
-  oc create -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/rhpam70-dev/businesscentral/image.yaml
-  oc create -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/rhpam70-dev/businesscentral-monitoring/image.yaml
-  oc create -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/rhpam70-dev/kieserver/image.yaml
-  oc create -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/rhpam70-dev/controller/image.yaml
-  oc create -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/rhpam70-dev/smartrouter/image.yaml
-  oc create -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/rhpam70-dev/elasticsearch/image.yaml
+  oc create -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/rhpam70-dev/templates/rhpam70-authoring.yaml
+  oc create -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/rhpam70-dev/templates/rhpam70-kieserver-externaldb.yaml
+  oc create -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/rhpam70-dev/templates/rhpam70-kieserver-mysql.yaml
+  oc create -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/rhpam70-dev/templates/rhpam70-kieserver-postgresql.yaml
+  oc create -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/rhpam70-dev/templates/rhpam70-prod-immutable-kieserver.yaml
+  oc create -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/rhpam70-dev/templates/rhpam70-prod-immutable-monitor.yaml
+  oc create -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/rhpam70-dev/templates/rhpam70-sit.yaml
+  oc create -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/rhpam70-dev/templates/rhpam70-trial-ephemeral.yaml
 }
 
 
@@ -257,7 +259,13 @@ function import_secrets_and_service_account() {
   echo_header "Importing secrets and service account."
   #oc create -f https://raw.githubusercontent.com/jboss-container-images/rhdm-7-openshift-image/rhdm70-dev/decisioncentral-app-secret.yaml
   #oc create -f https://raw.githubusercontent.com/jboss-container-images/rhdm-7-openshift-image/rhdm70-dev/kieserver-app-secret.yaml
-  oc create -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/rhpam70-dev/example-app-secret-template.yaml
+  oc process -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/rhpam70-dev/example-app-secret-template.yaml | oc create -f -
+  oc process -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/rhpam70-dev/example-app-secret-template.yaml -p SECRET_NAME=kieserver-app-secret | oc create -f -
+
+  oc create serviceaccount businesscentral-service-account
+  oc create serviceaccount kieserver-service-account
+  oc secrets link --for=mount businesscentral-service-account businesscentral-app-secret
+  oc secrets link --for=mount kieserver-service-account kieserver-app-secret
 }
 
 function create_application() {
@@ -269,18 +277,17 @@ function create_application() {
     IMAGE_STREAM_NAMESPACE=${PRJ[0]}
   fi
 
-  oc new-app --template=rhpam70-full-persistent \
+  oc new-app --template=rhpam70-authoring \
 			-p APPLICATION_NAME="$ARG_DEMO" \
 			-p IMAGE_STREAM_NAMESPACE="$IMAGE_STREAM_NAMESPACE" \
+			-p IMAGE_STREAM_TAG="1.0" \
 			-p KIE_ADMIN_USER="$KIE_ADMIN_USER" \
 			-p KIE_ADMIN_PWD="$KIE_ADMIN_PWD" \
 			-p KIE_SERVER_CONTROLLER_USER="$KIE_SERVER_CONTROLLER_USER" \
 			-p KIE_SERVER_CONTROLLER_PWD="$KIE_SERVER_CONTROLLER_PWD" \
 			-p KIE_SERVER_USER="$KIE_SERVER_USER" \
 			-p KIE_SERVER_PWD="$KIE_SERVER_PWD" \
-			-p MAVEN_REPO_USERNAME="$KIE_ADMIN_USER" \
-			-p MAVEN_REPO_PASSWORD="$KIE_ADMIN_PWD" \
-      -p BUSINESS_CENTRAL_VOLUME_CAPACITY="$ARG_PV_CAPACITY"
+			-p BUSINESS_CENTRAL_MEMORY_LIMIT="2Gi"
 
 }
 
