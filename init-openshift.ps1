@@ -12,7 +12,7 @@ Function Write-Host-Header($echo) {
   Write-Output "########################################################################"
 }
 
-$PRJ_DEMO="rhdm7-install"
+$PRJ_DEMO="rhpam7-install"
 $PRJ_DEMO_NAME=((./support/openshift/provision.ps1 info $PRJ_DEMO 2>&1 | Select-String -Pattern "Project name") -split "\s+")[2]
 
 # Check if the project exists
