@@ -240,8 +240,12 @@ function create_projects() {
 }
 
 function import_imagestreams_and_templates() {
+  echo_header "Patching Image Streams"
+  $SCRIPT_DIR/patch_image_streams.sh
+
   echo_header "Importing Image Streams"
-  oc create -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/rhpam70-dev/rhpam70-image-streams.yaml
+  #oc create -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/rhpam70-dev/rhpam70-image-streams.yaml
+  oc create -f $SCRIPT_DIR/rhpam70-image-streams-tech-preview.yaml
 
   echo_header "Importing Templates"
   oc create -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/rhpam70-dev/templates/rhpam70-authoring.yaml
