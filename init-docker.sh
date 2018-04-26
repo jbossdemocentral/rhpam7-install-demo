@@ -10,8 +10,9 @@ SERVER_CONF=$JBOSS_HOME/standalone/configuration/
 SERVER_BIN=$JBOSS_HOME/bin
 SRC_DIR=./installs
 SUPPORT_DIR=./support
-PAM_BUSINESS_CENTRAL=rhba-7.0.0.ER2-business-central-eap7-deployable.zip
-PAM_KIE_SERVER=rhba-7.0.0.ER2-kie-server-ee7.zip
+PAM_BUSINESS_CENTRAL=rhpam-7.0.0.ER4-business-central-eap7-deployable.zip
+PAM_KIE_SERVER=rhpam-7.0.0.ER4-kie-server-ee7.zip
+PAM_ADDONS=rhpam-7.0.0.ER4-add-ons.zip
 EAP=jboss-eap-7.1.0.zip
 #EAP_PATCH=jboss-eap-6.4.7-patch.zip
 VERSION=7.0
@@ -22,7 +23,7 @@ clear
 echo
 echo "######################################################################"
 echo "##                                                                  ##"
-echo "##  Setting up the ${DEMO}                                 ##"
+echo "##  Setting up the ${DEMO}                                    ##"
 echo "##                                                                  ##"
 echo "##                                                                  ##"
 echo "##     ####  #   # ####   ###   #   #   #####    #####              ##"
@@ -81,6 +82,16 @@ else
 		exit
 fi
 
+if [ -r $SRC_DIR/$PAM_ADDONS ] || [ -L $SRC_DIR/PAM_ADDONS ]; then
+		echo Product sources are present...
+		echo
+else
+		echo Need to download $PAM_ADDONS zip from http://developers.redhat.com
+		echo and place it in the $SRC_DIR directory to proceed...
+		echo
+		exit
+fi
+
 cp support/docker/Dockerfile .
 cp support/docker/.dockerignore .
 
@@ -111,6 +122,10 @@ echo "=                                                                         
 echo "=  Login into Business Central at:                                               ="
 echo "=                                                                                ="
 echo "=    http://localhost:8080/business-central  (u:pamAdmin / p:redhatpam1!)        ="
+echo "=                                                                                ="
+echo "=  Login into Case Management Showcase Application at:                           ="
+echo "=                                                                                ="
+echo "=    http://localhost:8080/rhpam-case-mgmt-showcase  (u:pamAdmin / p:redhatpam1!)="
 echo "=                                                                                ="
 echo "=                                                                                ="
 echo "=  $PRODUCT $VERSION $DEMO Setup Complete.                  ="

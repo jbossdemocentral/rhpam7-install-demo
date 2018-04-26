@@ -9,8 +9,9 @@ $PROJECT="git@github.com:jbossdemocentral/rhpam7-install-demo.git"
 $PRODUCT="Red Hat Process Automation Manager"
 $SRC_DIR="$PROJECT_HOME\installs"
 $SUPPORT_DIR="$PROJECT_HOME\support"
-$PAM_BUSINESS_CENTRAL="rhba-7.0.0.GA-business-central-eap7-deployable.zip"
-$PAM_KIE_SERVER="rhba-7.0.0.GA-kie-server-ee7.zip"
+$PAM_BUSINESS_CENTRAL="rhpam-7.0.0.ER4-business-central-eap7-deployable.zip"
+$PAM_KIE_SERVER="rhpam-7.0.0.ER4-kie-server-ee7.zip"
+$PAM_ADDONS=rhpam-7.0.0.ER4-add-ons.zip
 $EAP="jboss-eap-7.1.0.zip"
 $VERSION="7.0"
 
@@ -64,6 +65,14 @@ If (Test-Path "$SRC_DIR\$PAM_KIE_SERVER") {
 	Write-Host "Product sources are present...`n"
 } Else {
 	Write-Host "Need to download $PAM_KIE_SERVER package from the Customer Support Portal"
+	Write-Host "and place it in the $SRC_DIR directory to proceed...`n"
+	exit
+}
+
+If (Test-Path "$SRC_DIR\$PAM_ADDONS") {
+	Write-Host "Product sources are present...`n"
+} Else {
+	Write-Host "Need to download $PAM_ADDONS package from the Customer Support Portal"
 	Write-Host "and place it in the $SRC_DIR directory to proceed...`n"
 	exit
 }

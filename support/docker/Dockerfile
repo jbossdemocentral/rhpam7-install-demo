@@ -10,7 +10,7 @@ ENV JBOSS_HOME $HOME/jboss-eap-7.1
 ENV BA_VERSION_MAJOR 7
 ENV BA_VERSION_MINOR 0
 ENV BA_VERSION_MICRO 0
-ENV BA_VERSION_PATCH ER3
+ENV BA_VERSION_PATCH ER4
 
 ENV EAP_VERSION_MAJOR 7
 ENV EAP_VERSION_MINOR 1
@@ -18,22 +18,25 @@ ENV EAP_VERSION_MICRO 0
 #ENV EAP_VERSION_PATCH 0
 
 ENV EAP_ARCHIVE=jboss-eap-$EAP_VERSION_MAJOR.$EAP_VERSION_MINOR.$EAP_VERSION_MICRO.zip
-ENV BA_BUSINESS_CENTRAL=rhpam-$BA_VERSION_MAJOR.$BA_VERSION_MINOR.$BA_VERSION_MICRO.$BA_VERSION_PATCH-business-central-eap7-deployable.zip
-ENV BA_KIE_SERVER=rhpam-$BA_VERSION_MAJOR.$BA_VERSION_MINOR.$BA_VERSION_MICRO.$BA_VERSION_PATCH-kie-server-ee7.zip
+ENV PAM_BUSINESS_CENTRAL=rhpam-$BA_VERSION_MAJOR.$BA_VERSION_MINOR.$BA_VERSION_MICRO.$BA_VERSION_PATCH-business-central-eap7-deployable.zip
+ENV PAM_KIE_SERVER=rhpam-$BA_VERSION_MAJOR.$BA_VERSION_MINOR.$BA_VERSION_MICRO.$BA_VERSION_PATCH-kie-server-ee7.zip
+ENV PAM_ADDONS=rhpam-7.0.0.ER4-add-ons.zip
+ENV PAM_CASE_MGMT=rhpam-7.0-case-mgmt-showcase-eap7-deployable.zip
 
 # ADD Installation Files
-COPY installs/$BA_BUSINESS_CENTRAL installs/$BA_KIE_SERVER installs/$EAP_ARCHIVE /opt/jboss/
+COPY installs/$PAM_BUSINESS_CENTRAL installs/$PAM_KIE_SERVER installs/$PAM_ADDONS installs/$EAP_ARCHIVE /opt/jboss/
 
 # Update Permissions on Installers
 USER root
-RUN chown jboss:jboss /opt/jboss/$EAP_ARCHIVE /opt/jboss/$BA_BUSINESS_CENTRAL /opt/jboss/$BA_KIE_SERVER
+RUN chown jboss:jboss /opt/jboss/$EAP_ARCHIVE /opt/jboss/$PAM_BUSINESS_CENTRAL /opt/jboss/$PAM_KIE_SERVER /opt/jboss/$PAM_ADDONS
 USER jboss
 
 # Prepare and run installer and cleanup installation components
 RUN unzip -qo /opt/jboss/$EAP_ARCHIVE -d $HOME && \
-    unzip -qo /opt/jboss/$BA_BUSINESS_CENTRAL -d $HOME  && \
-		unzip -qo /opt/jboss/$BA_KIE_SERVER -d $JBOSS_HOME/standalone/deployments && touch $JBOSS_HOME/standalone/deployments/kie-server.war.dodeploy && \
-    rm -rf /opt/jboss/$BA_BUSINESS_CENTRAL /opt/jboss/$BA_KIE_SERVER /opt/jboss/$EAP_ARCHIVE $JBOSS_HOME/standalone/configuration/standalone_xml_history/
+    unzip -qo /opt/jboss/$PAM_BUSINESS_CENTRAL -d $HOME  && \
+		unzip -qo /opt/jboss/$PAM_KIE_SERVER -d $JBOSS_HOME/standalone/deployments && touch $JBOSS_HOME/standalone/deployments/kie-server.war.dodeploy && \
+    unzip -qo /opt/jboss/$PAM_ADDONS $PAM_CASE_MGMT -d $HOME && unzip -qo $HOME/$PAM_CASE_MGMT -d $HOME && touch $JBOSS_HOME/standalone/deployments/rhpam-case-mgmt-showcase.war.dodeploy && \
+    rm -rf /opt/jboss/$PAM_BUSINESS_CENTRAL /opt/jboss/$PAM_KIE_SERVER /opt/jboss/$PAM_ADDONS $HOME/$PAM_CASE_MGMT /opt/jboss/$EAP_ARCHIVE $JBOSS_HOME/standalone/configuration/standalone_xml_history/
 
 # Add support files
 RUN $JBOSS_HOME/bin/add-user.sh -a -r ApplicationRealm -u pamAdmin -p redhatpam1! -ro analyst,admin,manager,user,kie-server,kiemgmt,rest-all --silent  && \

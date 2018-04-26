@@ -10,8 +10,10 @@ SERVER_CONF=$JBOSS_HOME/standalone/configuration/
 SERVER_BIN=$JBOSS_HOME/bin
 SRC_DIR=./installs
 SUPPORT_DIR=./support
-BA_BUSINESS_CENTRAL=rhpam-7.0.0.ER3-business-central-eap7-deployable.zip
-BA_KIE_SERVER=rhpam-7.0.0.ER3-kie-server-ee7.zip
+PAM_BUSINESS_CENTRAL=rhpam-7.0.0.ER4-business-central-eap7-deployable.zip
+PAM_KIE_SERVER=rhpam-7.0.0.ER4-kie-server-ee7.zip
+PAM_ADDONS=rhpam-7.0.0.ER4-add-ons.zip
+PAM_CASE_MGMT=rhpam-7.0-case-mgmt-showcase-eap7-deployable.zip
 EAP=jboss-eap-7.1.0.zip
 #EAP_PATCH=jboss-eap-6.4.7-patch.zip
 VERSION=7.0
@@ -61,11 +63,11 @@ fi
 #	exit
 #fi
 
-if [ -r $SRC_DIR/$BA_BUSINESS_CENTRAL ] || [ -L $SRC_DIR/$BA_BUSINESS_CENTRAL ]; then
+if [ -r $SRC_DIR/$PAM_BUSINESS_CENTRAL ] || [ -L $SRC_DIR/$PAM_BUSINESS_CENTRAL ]; then
 		echo Product sources are present...
 		echo
 else
-		echo Need to download $BA_BUSINESS_CENTRAL zip from http://developers.redhat.com
+		echo Need to download $PAM_BUSINESS_CENTRAL zip from http://developers.redhat.com
 		echo and place it in the $SRC_DIR directory to proceed...
 		echo
 		exit
@@ -81,11 +83,21 @@ fi
 #		exit
 #fi
 
-if [ -r $SRC_DIR/$BA_KIE_SERVER ] || [ -L $SRC_DIR/$BA_KIE_SERVER ]; then
+if [ -r $SRC_DIR/$PAM_KIE_SERVER ] || [ -L $SRC_DIR/$PAM_KIE_SERVER ]; then
 		echo Product sources are present...
 		echo
 else
-		echo Need to download $BA_KIE_SERVER zip from http://developers.redhat.com
+		echo Need to download $PAM_KIE_SERVER zip from http://developers.redhat.com
+		echo and place it in the $SRC_DIR directory to proceed...
+		echo
+		exit
+fi
+
+if [ -r $SRC_DIR/$PAM_ADDONS ] || [ -L $SRC_DIR/PAM_ADDONS ]; then
+		echo Product sources are present...
+		echo
+else
+		echo Need to download $PAM_ADDONS zip from http://developers.redhat.com
 		echo and place it in the $SRC_DIR directory to proceed...
 		echo
 		exit
@@ -121,9 +133,9 @@ fi
 #fi
 
 echo
-echo "Deploying Red Hat Business Automation Manager: Business Central now..."
+echo "Deploying Red Hat Process Automation Manager: Business Central now..."
 echo
-unzip -qo $SRC_DIR/$BA_BUSINESS_CENTRAL -d $TARGET
+unzip -qo $SRC_DIR/$PAM_BUSINESS_CENTRAL -d $TARGET
 
 if [ $? -ne 0 ]; then
 	echo Error occurred during $PRODUCT installation
@@ -131,9 +143,9 @@ if [ $? -ne 0 ]; then
 fi
 
 echo
-echo "Deploying Red Hat Business Automation Manager: Process Server now..."
+echo "Deploying Red Hat Process Automation Manager: Process Server now..."
 echo
-unzip -qo $SRC_DIR/$BA_KIE_SERVER -d $SERVER_DIR
+unzip -qo $SRC_DIR/$PAM_KIE_SERVER -d $SERVER_DIR
 
 if [ $? -ne 0 ]; then
 	echo Error occurred during $PRODUCT installation
@@ -141,7 +153,17 @@ if [ $? -ne 0 ]; then
 fi
 touch $SERVER_DIR/kie-server.war.dodeploy
 
-
+echo
+echo "Deploying Red Hat Process Automation Manager: Case Management Showcase now..."
+echo
+unzip -qo $SRC_DIR/$PAM_ADDONS $PAM_CASE_MGMT -d $TARGET
+unzip -qo $TARGET/$PAM_CASE_MGMT -d $TARGET
+rm $TARGET/$PAM_CASE_MGMT
+if [ $? -ne 0 ]; then
+	echo Error occurred during $PRODUCT installation
+	exit
+fi
+touch $SERVER_DIR/rhpam-case-mgmt-showcase.war.dodeploy
 
 echo
 echo "  - enabling demo accounts setup..."
@@ -166,6 +188,8 @@ chmod u+x $JBOSS_HOME/bin/standalone.sh
 echo "You can now start the $PRODUCT with $SERVER_BIN/standalone.sh"
 echo
 echo "Login to http://localhost:8080/business-central   (u:pamAdmin / p:redhatpam1!)"
+echo
+echo "Login to http://localhost:8080/rhpam-case-mgmt-showcase   (u:pamAdmin / p:redhatpam1!)"
 echo
 
 echo "$PRODUCT $VERSION $DEMO Setup Complete."

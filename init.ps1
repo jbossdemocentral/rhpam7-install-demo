@@ -15,8 +15,10 @@ $SERVER_BIN="$JBOSS_HOME\bin"
 $SRC_DIR="$PROJECT_HOME\installs"
 $SUPPORT_DIR="$PROJECT_HOME\support"
 $PRJ_DIR="$PROJECT_HOME\projects"
-$PAM_BUSINES_CENTRAL="rhpam-7.0.0.ER3-business-central-eap7-deployable.zip"
-$DM_KIE_SERVER="rhpam-7.0.0.ER3-kie-server-ee7.zip"
+$PAM_BUSINES_CENTRAL="rhpam-7.0.0.ER4-business-central-eap7-deployable.zip"
+$PAM_KIE_SERVER="rhpam-7.0.0.ER4-kie-server-ee7.zip"
+$PAM_ADDONS=rhpam-7.0.0.ER4-add-ons.zip
+$PAM_CASE_MGMT=rhpam-7.0-case-mgmt-showcase-eap7-deployable.zip
 $EAP="jboss-eap-7.1.0.zip"
 #$EAP_PATCH="jboss-eap-6.4.7-patch.zip"
 $VERSION="7.0"
@@ -67,10 +69,18 @@ If (Test-Path "$SRC_DIR\$DM_DECISION_CENTRAL") {
 	exit
 }
 
-If (Test-Path "$SRC_DIR\$DM_KIE_SERVER") {
+If (Test-Path "$SRC_DIR\$PAM_KIE_SERVER") {
 	Write-Host "Product sources are present...`n"
 } Else {
-	Write-Host "Need to download $DM_KIE_SERVER package from the Customer Support Portal"
+	Write-Host "Need to download $PAM_KIE_SERVER package from the Customer Support Portal"
+	Write-Host "and place it in the $SRC_DIR directory to proceed...`n"
+	exit
+}
+
+If (Test-Path "$SRC_DIR\$PAM_ADDONS") {
+	Write-Host "Product sources are present...`n"
+} Else {
+	Write-Host "Need to download $PAM_ADDONS package from the Customer Support Portal"
 	Write-Host "and place it in the $SRC_DIR directory to proceed...`n"
 	exit
 }
@@ -149,7 +159,7 @@ If ($unzipProcess.ExitCode -ne 0) {
 
 Write-Host "Deploying Process Automation Manager Process Server now..."
 # Using 7-Zip. This currently seems to be the only way to overcome the Windows 260 character path limit.
-$argList = "x -o$JBOSS_HOME\standalone\deployments -y $SRC_DIR\$DM_KIE_SERVER"
+$argList = "x -o$JBOSS_HOME\standalone\deployments -y $SRC_DIR\$PAM_KIE_SERVER"
 $unzipProcess = (Start-Process -FilePath 7z.exe -ArgumentList $argList -Wait -PassThru -NoNewWindow)
 
 If ($unzipProcess.ExitCode -ne 0) {
@@ -158,6 +168,26 @@ If ($unzipProcess.ExitCode -ne 0) {
 }
 New-Item -ItemType file $JBOSS_HOME\standalone\deployments\kie-server.war.dodeploy
 Write-Host ""
+
+Write-Host "Deploying Process Automation Manager Case Management Showcase now..."
+# Using 7-Zip. This currently seems to be the only way to overcome the Windows 260 character path limit.
+$argList = "x -o$TARGET -y $SRC_DIR\$PAM_ADDONS $PAM_CASE_MGMT"
+$unzipProcess = (Start-Process -FilePath 7z.exe -ArgumentList $argList -Wait -PassThru -NoNewWindow)
+
+If ($unzipProcess.ExitCode -ne 0) {
+	Write-Error "Error occurred during Process Automation Manager Case Management Showcase installation."
+	exit
+}
+$argList = "x -o$TARGET -y $TARGET\$PAM_CASE_MGMT"
+$unzipProcess = (Start-Process -FilePath 7z.exe -ArgumentList $argList -Wait -PassThru -NoNewWindow)
+
+If ($unzipProcess.ExitCode -ne 0) {
+	Write-Error "Error occurred during Process Automation Manager Case Management Showcase installation."
+	exit
+}
+New-Item -ItemType file $JBOSS_HOME\standalone\deployments\rhpam-case-mgmt-showcase.war.dodeploy
+Write-Host ""
+
 
 Write-Host "- enabling demo accounts setup ...`n"
 $argList1 = "-a -r ApplicationRealm -u pamAdmin -p 'redhatpam1!' -ro 'analyst,admin,manager,user,kie-server,kiemgmt,rest-all' --silent"
