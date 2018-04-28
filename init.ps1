@@ -61,10 +61,10 @@ If (Test-Path "$SRC_DIR\$EAP") {
 #	exit
 #}
 
-If (Test-Path "$SRC_DIR\$DM_DECISION_CENTRAL") {
+If (Test-Path "$SRC_DIR\$PAM_BUSINES_CENTRAL") {
 	Write-Host "Product sources are present...`n"
 } Else {
-	Write-Host "Need to download $DM_DECISION_CENTRAL package from the Customer Support Portal"
+	Write-Host "Need to download $PAM_BUSINES_CENTRAL package from the Customer Support Portal"
 	Write-Host "and place it in the $SRC_DIR directory to proceed...`n"
 	exit
 }
@@ -204,7 +204,7 @@ Write-Host "- setting up standalone.xml configuration adjustments...`n"
 Copy-Item "$SUPPORT_DIR\standalone-full.xml" "$SERVER_CONF\standalone.xml" -force
 
 Write-Host "- setup email task notification user...`n"
-Copy-Item "$SUPPORT_DIR\userinfo.properties" "$SERVER_DIR\decision-central.war\WEB-INF\classes\" -force
+Copy-Item "$SUPPORT_DIR\userinfo.properties" "$SERVER_DIR\business-central.war\WEB-INF\classes\" -force
 
 Write-Host "============================================================================"
 Write-Host "=                                                                          ="
@@ -216,7 +216,7 @@ Write-Host "=   $SERVER_BIN\standalone.bat                          ="
 Write-Host "=                                                                          ="
 Write-Host "=  Login into business central at:                                         ="
 Write-Host "=                                                                          ="
-Write-Host "=    http://localhost:8080/decision-central  (u:dmAdmin / p:redhatdm1!)    ="
+Write-Host "=    http://localhost:8080/business-central  (u:dmAdmin / p:redhatdm1!)    ="
 Write-Host "=                                                                          ="
 Write-Host "=  See README.md for general details to run the various demo cases.        ="
 Write-Host "=                                                                          ="

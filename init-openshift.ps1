@@ -29,6 +29,6 @@ if ($PRJ_EXISTS) {
   Start-Sleep -s 20
 }
 
-Write-Output "Provisioning Red Hat Decision Manager 7 Install Demo."
+Write-Output "Provisioning Red Hat Process Automation Manager 7 Install Demo."
 ./support/openshift/provision.ps1 -command setup -demo $PRJ_DEMO -with-imagestreams
 Write-Output "Setup completed."
