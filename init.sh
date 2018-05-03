@@ -1,4 +1,20 @@
 #!/bin/sh
+# fallback product versions
+EAP_VERSION=7.1.0
+PAM_VERSION=7.0.0.ER4
+# optionally override default versions (any EAP 7.1.x + PAM 7.0.x will do)
+while getopts ":e:p:" opt; do
+  case $opt in
+   e) EAP_VERSION=$OPTARG
+      echo "Overriding EAP version with $EAP_VERSION" >&2
+      ;;
+   p) PAM_VERSION=$OPTARG
+      echo "Overriding PAM version with $PAM_VERSION" >&2
+      ;;
+   \?) echo "Invalid option: -$OPTARG" >&2
+      ;;
+  esac
+done
 DEMO="Install Demo"
 AUTHORS="Red Hat"
 PROJECT="git@github.com:jbossdemocentral/rhpam7-install-demo.git"
@@ -10,11 +26,11 @@ SERVER_CONF=$JBOSS_HOME/standalone/configuration/
 SERVER_BIN=$JBOSS_HOME/bin
 SRC_DIR=./installs
 SUPPORT_DIR=./support
-PAM_BUSINESS_CENTRAL=rhpam-7.0.0.ER4-business-central-eap7-deployable.zip
-PAM_KIE_SERVER=rhpam-7.0.0.ER4-kie-server-ee7.zip
-PAM_ADDONS=rhpam-7.0.0.ER4-add-ons.zip
+PAM_BUSINESS_CENTRAL=rhpam-$PAM_VERSION-business-central-eap7-deployable.zip
+PAM_KIE_SERVER=rhpam-$PAM_VERSION-kie-server-ee7.zip
+PAM_ADDONS=rhpam-$PAM_VERSION-add-ons.zip
 PAM_CASE_MGMT=rhpam-7.0-case-mgmt-showcase-eap7-deployable.zip
-EAP=jboss-eap-7.1.0.zip
+EAP=jboss-eap-$EAP_VERSION.zip
 #EAP_PATCH=jboss-eap-6.4.7-patch.zip
 VERSION=7.0
 
