@@ -1,8 +1,8 @@
 Download the following from http://developers.redhat.com
 
  * EAP zip (jboss-eap-7.1.0.zip)
- * Process Automation Manager: Business Central deployable (rhpam-7.0.0.ER4-business-central-eap7-deployable.zip)
- * Process Automation Manager: Process Server (KIE Server) deployable (rhpam-7.0.0.ER4-kie-server-ee7.zip)
- * Process Automation Manager: Case Managemet Application (rhpam-7.0.0.ER4-add-ons.zip)
+ * Process Automation Manager: Business Central deployable (rhpam-7.0.0.GA-business-central-eap7-deployable.zip)
+ * Process Automation Manager: Process Server (KIE Server) deployable (rhpam-7.0.0.GA-kie-server-ee7.zip)
+ * Process Automation Manager: Case Managemet Application (rhpam-7.0.0.GA-add-ons.zip)
 
 and copy to this directory for the init.sh and init.ps1 scripts to work.
