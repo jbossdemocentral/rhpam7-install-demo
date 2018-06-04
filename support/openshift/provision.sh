@@ -165,7 +165,8 @@ KIE_SERVER_USER=kieserver
 KIE_SERVER_PWD=kieserver1!
 
 #OpenShift Template Parameters
-OPENSHIFT_PAM7_TEMPLATES_TAG=34b76c9cf650c13eaeae691d574ff895065ec444
+#GitHub tag referencing the image streams and templates.
+OPENSHIFT_PAM7_TEMPLATES_TAG=rhpam70
 
 
 ################################################################################
@@ -243,15 +244,10 @@ function create_projects() {
 }
 
 function import_imagestreams_and_templates() {
-  echo_header "Patching Image Streams"
-  $SCRIPT_DIR/patch_image_streams.sh
-
   echo_header "Importing Image Streams"
-  #oc create -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/rhpam70-dev/rhpam70-image-streams.yaml
-  oc create -f $SCRIPT_DIR/rhpam70-image-streams-tech-preview.yaml
+  oc create -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/$OPENSHIFT_PAM7_TEMPLATES_TAG/rhpam70-image-streams.yaml
 
   echo_header "Importing Templates"
-  #oc create -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/rhpam70-dev/templates/rhpam70-authoring.yaml
   oc create -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/$OPENSHIFT_PAM7_TEMPLATES_TAG/templates/rhpam70-authoring.yaml
   oc create -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/$OPENSHIFT_PAM7_TEMPLATES_TAG/templates/rhpam70-kieserver-externaldb.yaml
   oc create -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/$OPENSHIFT_PAM7_TEMPLATES_TAG/templates/rhpam70-kieserver-mysql.yaml
@@ -265,10 +261,8 @@ function import_imagestreams_and_templates() {
 
 function import_secrets_and_service_account() {
   echo_header "Importing secrets and service account."
-  #oc create -f https://raw.githubusercontent.com/jboss-container-images/rhdm-7-openshift-image/rhdm70-dev/decisioncentral-app-secret.yaml
-  #oc create -f https://raw.githubusercontent.com/jboss-container-images/rhdm-7-openshift-image/rhdm70-dev/kieserver-app-secret.yaml
-  oc process -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/rhpam70-dev/example-app-secret-template.yaml | oc create -f -
-  oc process -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/rhpam70-dev/example-app-secret-template.yaml -p SECRET_NAME=kieserver-app-secret | oc create -f -
+  oc process -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/$OPENSHIFT_PAM7_TEMPLATES_TAG/example-app-secret-template.yaml | oc create -f -
+  oc process -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/$OPENSHIFT_PAM7_TEMPLATES_TAG/example-app-secret-template.yaml -p SECRET_NAME=kieserver-app-secret | oc create -f -
 
   oc create serviceaccount businesscentral-service-account
   oc create serviceaccount kieserver-service-account
