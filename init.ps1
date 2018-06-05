@@ -16,7 +16,7 @@ $SRC_DIR="$PROJECT_HOME\installs"
 $SUPPORT_DIR="$PROJECT_HOME\support"
 $PRJ_DIR="$PROJECT_HOME\projects"
 $PAM_VERSION="7.0.0"
-$PAM_BUSINES_CENTRAL="rhpam-$PAM_VERSION-business-central-eap7-deployable.zip"
+$PAM_BUSINESS_CENTRAL="rhpam-$PAM_VERSION-business-central-eap7-deployable.zip"
 $PAM_KIE_SERVER="rhpam-$PAM_VERSION-kie-server-ee7.zip"
 $PAM_ADDONS=rhpam-$PAM_VERSION-add-ons.zip
 $PAM_CASE_MGMT=rhpam-7.0-case-mgmt-showcase-eap7-deployable.zip
@@ -62,10 +62,10 @@ If (Test-Path "$SRC_DIR\$EAP") {
 #	exit
 #}
 
-If (Test-Path "$SRC_DIR\$DM_DECISION_CENTRAL") {
+If (Test-Path "$SRC_DIR\$PAM_BUSINESS_CENTRAL") {
 	Write-Host "Product sources are present...`n"
 } Else {
-	Write-Host "Need to download $DM_DECISION_CENTRAL package from the Customer Support Portal"
+	Write-Host "Need to download $PAM_BUSINESS_CENTRAL package from the Customer Support Portal"
 	Write-Host "and place it in the $SRC_DIR directory to proceed...`n"
 	exit
 }
@@ -225,7 +225,7 @@ Write-Host "=   $SERVER_BIN\standalone.bat                          ="
 Write-Host "=                                                                          ="
 Write-Host "=  Login into business central at:                                         ="
 Write-Host "=                                                                          ="
-Write-Host "=    http://localhost:8080/decision-central  (u:dmAdmin / p:redhatdm1!)    ="
+Write-Host "=    http://localhost:8080/business-central  (u:pamAdmin / p:redhatpam1!)    ="
 Write-Host "=                                                                          ="
 Write-Host "=  See README.md for general details to run the various demo cases.        ="
 Write-Host "=                                                                          ="
