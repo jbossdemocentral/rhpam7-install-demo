@@ -110,3 +110,6 @@ Released versions
 See the tagged releases for the following versions of the product:
 
 - v0.8 - Red Hat Process Automation Manager 7.0.0.ER2
+
+
+![RHPAM 7](https://raw.githubusercontent.com/jbossdemocentral/rhpam7-install-demo/master/docs/demo-images/rhpam7.png)
