@@ -95,7 +95,7 @@ if (-not ([string]::IsNullOrEmpty($ARG_PROJECT_SUFFIX)))
 
 $PRJ=@("rhpam7-install-$PRJ_SUFFIX","RHPAM7 Install Demo","Red Hat Process Automation Manager 7 Install Demo")
 
-$SCRIPT_DIR=$scriptName = $myInvocation.MyCommand.Path
+$SCRIPT_DIR= Split-Path $myInvocation.MyCommand.Path
 
 # KIE Parameters
 $KIE_ADMIN_USER="pamAdmin"
@@ -228,12 +228,6 @@ Function Import-ImageStreams-And-Templates() {
 
 Function Import-Secrets-And-Service-Account() {
   Write-Output-Header "Importing secrets and service account."
-  #Call-Oc "create -f https://raw.githubusercontent.com/jboss-container-images/rhdm-7-openshift-image/$OPENSHIFT_PAM7_TEMPLATES_TAG/businesscentral-app-secret.yaml" $True "Error importing Business Central secret." $True
-  #Call-Oc "create -f https://raw.githubusercontent.com/jboss-container-images/rhdm-7-openshift-image/$OPENSHIFT_PAM7_TEMPLATES_TAG/kieserver-app-secret.yaml" $True "Error importing KIE-Server secret." $True
-
-  #oc process -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/$OPENSHIFT_PAM7_TEMPLATES_TAG/example-app-secret-template.yaml | oc create -f -
-  #oc process -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/$OPENSHIFT_PAM7_TEMPLATES_TAG/example-app-secret-template.yaml -p SECRET_NAME=kieserver-app-secret | oc create -f -
-
   oc process -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/$OPENSHIFT_PAM7_TEMPLATES_TAG/example-app-secret-template.yaml | oc create -f -
   oc process -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/$OPENSHIFT_PAM7_TEMPLATES_TAG/example-app-secret-template.yaml -p SECRET_NAME=kieserver-app-secret | oc create -f -
 
