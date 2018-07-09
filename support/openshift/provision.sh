@@ -18,7 +18,7 @@ function usage() {
     echo " $0 --help"
     echo
     echo "Example:"
-    echo " $0 setup rhdm7-install --project-suffix s40d"
+    echo " $0 setup rhpam7-install --project-suffix s40d"
     echo
     echo "COMMANDS:"
     echo "   setup                    Set up the demo projects and deploy demo apps"
