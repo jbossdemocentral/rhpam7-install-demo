@@ -8,8 +8,8 @@ Software
 --------
 The following software is required to run this demo:
 - [JBoss EAP 7.1 zip archive](https://developers.redhat.com/download-manager/file/jboss-eap-7.1.0.zip)
-- [Red Hat Process Automation Manager: Business Central 7.0.0.ER2 deployable for EE7](https://upload.wikimedia.org/wikipedia/commons/6/67/Learning_Curve_--_Coming_Soon_Placeholder.png)
-- [Red Hat Process Automation Manager: KIE-Server 7.0.0.ER2 deployable for EE7]((https://upload.wikimedia.org/wikipedia/commons/6/67/Learning_Curve_--_Coming_Soon_Placeholder.png))
+- [Red Hat Process Automation Manager 7.0.2 Business Central Deployable for EAP 7](https://access.redhat.com/jbossnetwork/restricted/softwareDownload.html?softwareId=60331)
+- [Red Hat Process Automation Manager 7.0.2 Process Server for All Supported EE7 Containers](https://access.redhat.com/jbossnetwork/restricted/softwareDownload.html?softwareId=60341)
 - [7-Zip](http://www.7-zip.org/download.html) (Windows only): to overcome the Windows 260 character path length limit, we need 7-Zip to unzip the Process Automation Manager deployable.
 
 
