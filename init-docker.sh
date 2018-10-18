@@ -10,13 +10,13 @@ SERVER_CONF=$JBOSS_HOME/standalone/configuration/
 SERVER_BIN=$JBOSS_HOME/bin
 SRC_DIR=./installs
 SUPPORT_DIR=./support
-PAM_VERSION=7.0.2
+PAM_VERSION=7.1.0
 PAM_BUSINESS_CENTRAL=rhpam-$PAM_VERSION-business-central-eap7-deployable.zip
 PAM_KIE_SERVER=rhpam-$PAM_VERSION-kie-server-ee7.zip
 PAM_ADDONS=rhpam-$PAM_VERSION-add-ons.zip
 EAP=jboss-eap-7.1.0.zip
 #EAP_PATCH=jboss-eap-6.4.7-patch.zip
-VERSION=7.0
+VERSION=7.1
 
 # wipe screen.
 clear
@@ -27,11 +27,11 @@ echo "##                                                                  ##"
 echo "##  Setting up the ${DEMO}                                    ##"
 echo "##                                                                  ##"
 echo "##                                                                  ##"
-echo "##     ####  #   # ####   ###   #   #   #####    #####              ##"
-echo "##     #   # #   # #   # #   # # # # #     #     #   #              ##"
-echo "##     ####  ##### ####  ##### #  #  #   ###     #   #              ##"
-echo "##     # #   #   # #     #   # #     #   #       #   #              ##"
-echo "##     #  #  #   # #     #   # #     #  #     #  #####              ##"
+echo "##     ####  #   # ####   ###   #   #   #####    #   #              ##"
+echo "##     #   # #   # #   # #   # # # # #     #      # #               ##"
+echo "##     ####  ##### ####  ##### #  #  #   ###       #                ##"
+echo "##     # #   #   # #     #   # #     #   #        # #               ##"
+echo "##     #  #  #   # #     #   # #     #  #     #  #   #              ##"
 echo "##                                                                  ##"
 echo "##  brought to you by,                                              ##"
 echo "##             ${AUTHORS}                                              ##"

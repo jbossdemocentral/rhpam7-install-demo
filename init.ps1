@@ -15,14 +15,14 @@ $SERVER_BIN="$JBOSS_HOME\bin"
 $SRC_DIR="$PROJECT_HOME\installs"
 $SUPPORT_DIR="$PROJECT_HOME\support"
 $PRJ_DIR="$PROJECT_HOME\projects"
-$PAM_VERSION="7.0.2"
+$PAM_VERSION="7.1.0"
 $PAM_BUSINESS_CENTRAL="rhpam-$PAM_VERSION-business-central-eap7-deployable.zip"
 $PAM_KIE_SERVER="rhpam-$PAM_VERSION-kie-server-ee7.zip"
 $PAM_ADDONS=rhpam-$PAM_VERSION-add-ons.zip
 $PAM_CASE_MGMT=rhpam-7.0-case-mgmt-showcase-eap7-deployable.zip
 $EAP="jboss-eap-7.1.0.zip"
 #$EAP_PATCH="jboss-eap-6.4.7-patch.zip"
-$VERSION="7.0"
+$VERSION="7.1"
 
 set NOPAUSE=true
 
@@ -31,11 +31,11 @@ Write-Host "##                                                                  
 Write-Host "##  Setting up the ${DEMO}            ##"
 Write-Host "##                                                                  ##"
 Write-Host "##                                                                  ##"
-Write-Host "##     ####  #   # ####   ###   #   #   #####    #####              ##"
-Write-Host "##     #   # #   # #   # #   # # # # #     #     #   #              ##"
-Write-Host "##     ####  ##### ####  ##### #  #  #   ###     #   #              ##"
-Write-Host "##     # #   #   # #     #   # #     #   #       #   #              ##"
-Write-Host "##     #  #  #   # #     #   # #     #  #     #  #####              ##"
+Write-Host "##     ####  #   # ####   ###   #   #   #####    #   #              ##"
+Write-Host "##     #   # #   # #   # #   # # # # #     #      # #               ##"
+Write-Host "##     ####  ##### ####  ##### #  #  #   ###       #                ##"
+Write-Host "##     # #   #   # #     #   # #     #   #        # #               ##"
+Write-Host "##     #  #  #   # #     #   # #     #  #     #  #   #              ##"
 Write-Host "##                                                                  ##"
 Write-Host "##  brought to you by,                                              ##"
 Write-Host "##             %AUTHORS%                                             ##"
