@@ -1,3 +1,5 @@
+. .\init-properties.ps1
+
 if ((Get-Command "oc" -ErrorAction SilentlyContinue) -eq $null)
 {
    Write-Output "The oc client tools need to be installed to connect to OpenShift."
