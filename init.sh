@@ -146,7 +146,6 @@ if [ $? -ne 0 ]; then
 	echo Error occurred during $PRODUCT installation
 	exit
 fi
-touch $SERVER_DIR/rhpam-case-mgmt-showcase.war.dodeploy
 
 echo
 echo "  - enabling demo accounts setup..."
