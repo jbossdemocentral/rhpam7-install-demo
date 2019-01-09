@@ -165,7 +165,7 @@ If ($unzipProcess.ExitCode -ne 0) {
 	Write-Error "Error occurred during Process Automation Manager Case Management Showcase installation."
 	exit
 }
-New-Item -ItemType file $JBOSS_HOME\standalone\deployments\rhpam-case-mgmt-showcase.war.dodeploy
+#New-Item -ItemType file $JBOSS_HOME\standalone\deployments\rhpam-case-mgmt-showcase.war.dodeploy
 Write-Host ""
 
 
@@ -192,7 +192,7 @@ Write-Host "- setting up standalone.xml configuration adjustments...`n"
 Copy-Item "$SUPPORT_DIR\standalone-full.xml" "$SERVER_CONF\standalone.xml" -force
 
 Write-Host "- setup email task notification user...`n"
-Copy-Item "$SUPPORT_DIR\userinfo.properties" "$SERVER_DIR\decision-central.war\WEB-INF\classes\" -force
+Copy-Item "$SUPPORT_DIR\userinfo.properties" "$SERVER_DIR\business-central.war\WEB-INF\classes\" -force
 
 Write-Host "============================================================================"
 Write-Host "=                                                                          ="
