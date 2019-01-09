@@ -58,5 +58,5 @@ USER jboss
 EXPOSE 9990 9999 8080
 
 # Run BRMS
-ENTRYPOINT ["/opt/jboss/jboss-eap-7.1/bin/standalone.sh"]
+ENTRYPOINT ["/opt/jboss/jboss-eap-7.2/bin/standalone.sh"]
 CMD ["-c","standalone-full.xml","-b", "0.0.0.0","-bmanagement","0.0.0.0"]

@@ -82,7 +82,7 @@ cp support/docker/.dockerignore .
 echo Starting Docker build.
 echo
 
-docker build --no-cache -t jbossdemocentral/rhpam7-mortgage-demo --build-arg PAM_VERSION=$PAM_VERSION --build-arg PAM_BUSINESS_CENTRAL=$PAM_BUSINESS_CENTRAL --build-arg PAM_KIE_SERVER=$PAM_KIE_SERVER --build-arg EAP=$EAP --build-arg PAM_ADDONS=$PAM_ADDONS --build-arg PAM_CASE_MGMT=$PAM_CASE_MGMT --build-arg JBOSS_EAP=$JBOSS_EAP .
+docker build --no-cache -t jbossdemocentral/rhpam7-install-demo --build-arg PAM_VERSION=$PAM_VERSION --build-arg PAM_BUSINESS_CENTRAL=$PAM_BUSINESS_CENTRAL --build-arg PAM_KIE_SERVER=$PAM_KIE_SERVER --build-arg EAP=$EAP --build-arg PAM_ADDONS=$PAM_ADDONS --build-arg PAM_CASE_MGMT=$PAM_CASE_MGMT --build-arg JBOSS_EAP=$JBOSS_EAP .
 
 if [ $? -ne 0 ]; then
         echo
