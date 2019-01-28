@@ -1,28 +1,7 @@
+. .\init-properties.ps1
 
 # wipe screen
 Clear-Host
-
-$PROJECT_HOME = $PSScriptRoot
-$DEMO="Install Demo"
-$AUTHORS="Red Hat"
-$PROJECT="git@github.com:jbossdemocentral/rhpam7-install-demo.git"
-$PRODUCT="Red Hat Procss Automation Manager"
-$TARGET="$PROJECT_HOME\target"
-$JBOSS_HOME="$TARGET\jboss-eap-7.1"
-$SERVER_DIR="$JBOSS_HOME\standalone\deployments\"
-$SERVER_CONF="$JBOSS_HOME\standalone\configuration\"
-$SERVER_BIN="$JBOSS_HOME\bin"
-$SRC_DIR="$PROJECT_HOME\installs"
-$SUPPORT_DIR="$PROJECT_HOME\support"
-$PRJ_DIR="$PROJECT_HOME\projects"
-$PAM_VERSION="7.1.0"
-$PAM_BUSINESS_CENTRAL="rhpam-$PAM_VERSION-business-central-eap7-deployable.zip"
-$PAM_KIE_SERVER="rhpam-$PAM_VERSION-kie-server-ee7.zip"
-$PAM_ADDONS=rhpam-$PAM_VERSION-add-ons.zip
-$PAM_CASE_MGMT=rhpam-7.0-case-mgmt-showcase-eap7-deployable.zip
-$EAP="jboss-eap-7.1.0.zip"
-#$EAP_PATCH="jboss-eap-6.4.7-patch.zip"
-$VERSION="7.1"
 
 set NOPAUSE=true
 
@@ -186,7 +165,7 @@ If ($unzipProcess.ExitCode -ne 0) {
 	Write-Error "Error occurred during Process Automation Manager Case Management Showcase installation."
 	exit
 }
-New-Item -ItemType file $JBOSS_HOME\standalone\deployments\rhpam-case-mgmt-showcase.war.dodeploy
+#New-Item -ItemType file $JBOSS_HOME\standalone\deployments\rhpam-case-mgmt-showcase.war.dodeploy
 Write-Host ""
 
 
@@ -213,7 +192,7 @@ Write-Host "- setting up standalone.xml configuration adjustments...`n"
 Copy-Item "$SUPPORT_DIR\standalone-full.xml" "$SERVER_CONF\standalone.xml" -force
 
 Write-Host "- setup email task notification user...`n"
-Copy-Item "$SUPPORT_DIR\userinfo.properties" "$SERVER_DIR\decision-central.war\WEB-INF\classes\" -force
+Copy-Item "$SUPPORT_DIR\userinfo.properties" "$SERVER_DIR\business-central.war\WEB-INF\classes\" -force
 
 Write-Host "============================================================================"
 Write-Host "=                                                                          ="

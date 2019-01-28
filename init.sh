@@ -1,23 +1,5 @@
 #!/bin/sh
-DEMO="Install Demo"
-AUTHORS="Red Hat"
-PROJECT="git@github.com:jbossdemocentral/rhpam7-install-demo.git"
-PRODUCT="Red Hat Process Automation Manager"
-TARGET=./target
-JBOSS_HOME=$TARGET/jboss-eap-7.1
-SERVER_DIR=$JBOSS_HOME/standalone/deployments
-SERVER_CONF=$JBOSS_HOME/standalone/configuration/
-SERVER_BIN=$JBOSS_HOME/bin
-SRC_DIR=./installs
-SUPPORT_DIR=./support
-PAM_VERSION=7.1.0
-PAM_BUSINESS_CENTRAL=rhpam-$PAM_VERSION-business-central-eap7-deployable.zip
-PAM_KIE_SERVER=rhpam-$PAM_VERSION-kie-server-ee7.zip
-PAM_ADDONS=rhpam-$PAM_VERSION-add-ons.zip
-PAM_CASE_MGMT=rhpam-7.1-case-mgmt-showcase-eap7-deployable.zip
-EAP=jboss-eap-7.1.0.zip
-#EAP_PATCH=jboss-eap-6.4.7-patch.zip
-VERSION=7.1
+. init-properties.sh
 
 # wipe screen.
 clear
@@ -164,7 +146,6 @@ if [ $? -ne 0 ]; then
 	echo Error occurred during $PRODUCT installation
 	exit
 fi
-touch $SERVER_DIR/rhpam-case-mgmt-showcase.war.dodeploy
 
 echo
 echo "  - enabling demo accounts setup..."

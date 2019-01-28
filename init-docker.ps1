@@ -1,20 +1,6 @@
-
+. .\init-properties.ps1
 # wipe screen
 Clear-Host
-
-$PROJECT_HOME = $PSScriptRoot
-$DEMO="Install Demo"
-$AUTHORS="Red Hat"
-$PROJECT="git@github.com:jbossdemocentral/rhpam7-install-demo.git"
-$PRODUCT="Red Hat Process Automation Manager"
-$SRC_DIR="$PROJECT_HOME\installs"
-$SUPPORT_DIR="$PROJECT_HOME\support"
-$PAM_VERSION="7.1.0"
-$PAM_BUSINESS_CENTRAL="rhpam-$PAM_VERSION-business-central-eap7-deployable.zip"
-$PAM_KIE_SERVER="rhpam-$PAM_VERSION-kie-server-ee7.zip"
-$PAM_ADDONS=rhpam-$PAM_VERSION-add-ons.zip
-$EAP="jboss-eap-7.1.0.zip"
-$VERSION="7.1"
 
 set NOPAUSE=true
 
@@ -83,7 +69,7 @@ Copy-Item "$SUPPORT_DIR\docker\.dockerignore" "$PROJECT_HOME" -force
 
 Write-Host "Starting Docker build.`n"
 
-$argList = "build -t jbossdemocentral/rhpam7-install-demo $PROJECT_HOME"
+$argList = "build --no-cache -t jbossdemocentral/rhpam7-install-demo --build-arg PAM_VERSION=$PAM_VERSION --build-arg PAM_BUSINESS_CENTRAL=$PAM_BUSINESS_CENTRAL --build-arg PAM_KIE_SERVER=$PAM_KIE_SERVER --build-arg EAP=$EAP --build-arg PAM_ADDONS=$PAM_ADDONS --build-arg PAM_CASE_MGMT=$PAM_CASE_MGMT --build-arg JBOSS_EAP=$JBOSS_EAP $PROJECT_HOME"
 $process = (Start-Process -FilePath docker.exe -ArgumentList $argList -Wait -PassThru -NoNewWindow)
 Write-Host "`n"
 
