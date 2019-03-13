@@ -170,8 +170,8 @@ Write-Host ""
 
 
 Write-Host "- enabling demo accounts setup ...`n"
-$argList1 = "-a -r ApplicationRealm -u pamAdmin -p 'redhatpam1!' -ro 'analyst,admin,manager,user,kie-server,kiemgmt,rest-all' --silent"
-$argList2 = "-a -r ApplicationRealm -u adminUser -p 'test1234!' -ro 'analyst,admin,manager,user,kie-server,kiemgmt,rest-all' --silent"
+$argList1 = "-a -r ApplicationRealm -u pamAdmin -p 'redhatpam1!' -ro 'analyst,admin,manager,user,kie-server,kiemgmt,rest-all,Administrators' --silent"
+$argList2 = "-a -r ApplicationRealm -u adminUser -p 'test1234!' -ro 'analyst,admin,manager,user,kie-server,kiemgmt,rest-all,Administrators' --silent"
 $argList3 = "-a -r ApplicationRealm -u kieserver -p 'kieserver1!' -ro 'kie-server' --silent"
 $argList4 = "-a -r ApplicationRealm -u caseUser -p 'redhatpam1!' -ro 'user' --silent"
 $argList5 = "-a -r ApplicationRealm -u caseManager -p 'redhatpam1!' -ro 'user,manager' --silent"
