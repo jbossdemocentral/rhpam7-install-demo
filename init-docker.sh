@@ -1,5 +1,5 @@
 #!/bin/sh
-. init-properties.sh
+. ./init-properties.sh
 
 # wipe screen.
 clear

@@ -1,5 +1,5 @@
 #!/bin/sh
-. init-properties.sh
+. ./init-properties.sh
 
 command -v oc >/dev/null 2>&1 || {
   echo >&2 "The oc client tools need to be installed to connect to OpenShift.";
