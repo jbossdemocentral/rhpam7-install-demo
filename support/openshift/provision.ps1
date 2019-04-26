@@ -108,6 +108,7 @@ $KIE_SERVER_PWD="kieserver1!"
 #OpenShift Template Parameters
 #GitHub tag referencing the image streams and templates.
 $OPENSHIFT_PAM7_TEMPLATES_TAG="7.3.0.GA"
+$IMAGE_STREAM_TAG="1.0"
 
 
 ################################################################################
@@ -210,17 +211,45 @@ Function Create-Projects() {
     Call-Oc $argList $False "Error occurred during project creation." $True
 }
 
-
 Function Import-ImageStreams-And-Templates() {
   Write-Output-Header "Importing Image Streams"
   Call-Oc "create -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/$OPENSHIFT_PAM7_TEMPLATES_TAG/rhpam73-image-streams.yaml" $True "Error importing Image Streams" $True
 
-  Write-Output-Header "Patching the ImageStreams"
-  oc patch is/rhpam73-businesscentral-openshift --type='json' -p "[{'op': 'replace', 'path': '/spec/tags/0/from/name', 'value': 'registry.access.redhat.com/rhpam-7/rhpam73-businesscentral-openshift:1.0'}]"
-  oc patch is/rhpam73-kieserver-openshift --type='json' -p "[{'op': 'replace', 'path': '/spec/tags/0/from/name', 'value': 'registry.access.redhat.com/rhpam-7/rhpam73-kieserver-openshift:1.0'}]"
+  Write-Output ""
+  Write-Output "Fetching ImageStreams from registry."
+
+  Start-Sleep -s 10
+
+  #  Explicitly import the images. This is to overcome a problem where the image import gets a 500 error from registry.redhat.io when we deploy multiple containers at once.
+  Call-Oc "import-image rhpam73-businesscentral-openshift:$IMAGE_STREAM_TAG —confirm -n $($PRJ[0])" $True "Error fetching Image Streams."
+  Call-Oc "import-image rhpam73-kieserver-openshift:$IMAGE_STREAM_TAG —confirm -n $($PRJ[0])" $True "Error fetching Image Streams."
+
+  #Write-Output-Header "Patching the ImageStreams"
+  #oc patch is/rhpam73-businesscentral-openshift --type='json' -p "[{'op': 'replace', 'path': '/spec/tags/0/from/name', 'value': 'registry.access.redhat.com/rhpam-7/rhpam73-businesscentral-openshift:1.0'}]"
+  #oc patch is/rhpam73-kieserver-openshift --type='json' -p "[{'op': 'replace', 'path': '/spec/tags/0/from/name', 'value': 'registry.access.redhat.com/rhpam-7/rhpam73-kieserver-openshift:1.0'}]"
 
   Write-Output-Header "Importing Templates"
   Call-Oc "create -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/$OPENSHIFT_PAM7_TEMPLATES_TAG/templates/rhpam73-authoring.yaml" $True "Error importing Template" $True
+}
+
+Function Create-Rhn-Secret-For-Pull() {
+
+  Write-Output ""
+  Write-Output "########################################## Login Required ##########################################"
+  Write-Output "# The new Red Hat Image Registry requires users to login with their Red Hat Network (RHN) account. #"
+  Write-Output "# If you do not have an RHN account yet, you can create one at https://developers.redhat.com       #"
+  Write-Output "####################################################################################################"
+  Write-Output ""
+
+  $RHN_USERNAME = Read-Host "Enter RHN username"
+  $RHN_PASSWORD_SECURED = Read-Host "Enter RHN password" -AsSecureString
+  $RHN_EMAIL = Read-Host "Enter e-mail address"
+
+  $BSTR = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($RHN_PASSWORD_SECURED)
+  $RHN_PASSWORD = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($BSTR)
+
+  oc create secret docker-registry red-hat-container-registry --docker-server=registry.redhat.io --docker-username=$RHN_USERNAME --docker-password=$RHN_PASSWORD --docker-email=$RHN_EMAIL
+  oc secrets link builder red-hat-container-registry --for=pull
 }
 
 Function Import-Secrets-And-Service-Account() {
@@ -403,7 +432,7 @@ switch ( $ARG_COMMAND )
     Print-Info
     #Pre-Condition-Check
     Create-Projects
-
+    Create-Rhn-Secret-For-Pull
     if ($ARG_WITH_IMAGESTREAMS) {
       Import-ImageStreams-And-Templates
     }
