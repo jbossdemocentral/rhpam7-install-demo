@@ -254,7 +254,7 @@ function import_imagestreams_and_templates() {
   runSpinner 10
 
   #  Explicitly import the images. This is to overcome a problem where the image import gets a 500 error from registry.redhat.io when we deploy multiple containers at once.
-  oc import-image rhdm73-businesscentral-openshift:$IMAGE_STREAM_TAG —confirm -n ${PRJ[0]}
+  oc import-image rhpam73-businesscentral-openshift:$IMAGE_STREAM_TAG —confirm -n ${PRJ[0]}
   oc import-image rhpam73-kieserver-openshift:$IMAGE_STREAM_TAG —confirm -n ${PRJ[0]}
 
   #  echo_header "Patching the ImageStreams"
