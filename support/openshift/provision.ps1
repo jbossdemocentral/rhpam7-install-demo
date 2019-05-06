@@ -159,7 +159,7 @@ Function Call-Oc($command, [bool]$out, $errorMessage, [bool]$doexit) {
 Function Print-Info() {
   Write-Output-Header "Configuration"
 
-  Invoke-Expression "oc version" | select -last 3| select -first 1 | %{$_ -cmatch ".*https://(?<url>.*)"}
+  Invoke-Expression "oc version" | select -last 2| select -first 1 | %{$_ -cmatch ".*https://(?<url>.*)"}
   $OPENSHIFT_MASTER=$matches['url']
 
   Write-Output "Demo name:        $ARG_DEMO"
