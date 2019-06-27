@@ -1,5 +1,5 @@
 # Use jbossdemocentral/developer as the base
-FROM jbossdemocentral/developer
+FROM quay.io/jbossdemocentral/developer
 
 # Maintainer details
 MAINTAINER Red Hat
