@@ -107,7 +107,7 @@ $KIE_SERVER_PWD="kieserver1!"
 
 #OpenShift Template Parameters
 #GitHub tag referencing the image streams and templates.
-$OPENSHIFT_PAM7_TEMPLATES_TAG="7.3.0.GA"
+$OPENSHIFT_PAM7_TEMPLATES_TAG="7.4.0.GA"
 $IMAGE_STREAM_TAG="1.0"
 
 
@@ -213,7 +213,7 @@ Function Create-Projects() {
 
 Function Import-ImageStreams-And-Templates() {
   Write-Output-Header "Importing Image Streams"
-  Call-Oc "create -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/$OPENSHIFT_PAM7_TEMPLATES_TAG/rhpam73-image-streams.yaml" $True "Error importing Image Streams" $True
+  Call-Oc "create -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/$OPENSHIFT_PAM7_TEMPLATES_TAG/rhpam74-image-streams.yaml" $True "Error importing Image Streams" $True
 
   Write-Output ""
   Write-Output "Fetching ImageStreams from registry."
@@ -221,15 +221,15 @@ Function Import-ImageStreams-And-Templates() {
   Start-Sleep -s 10
 
   #  Explicitly import the images. This is to overcome a problem where the image import gets a 500 error from registry.redhat.io when we deploy multiple containers at once.
-  Call-Oc "import-image rhpam73-businesscentral-openshift:$IMAGE_STREAM_TAG —confirm -n $($PRJ[0])" $True "Error fetching Image Streams."
-  Call-Oc "import-image rhpam73-kieserver-openshift:$IMAGE_STREAM_TAG —confirm -n $($PRJ[0])" $True "Error fetching Image Streams."
+  Call-Oc "import-image rhpam74-businesscentral-openshift:$IMAGE_STREAM_TAG —confirm -n $($PRJ[0])" $True "Error fetching Image Streams."
+  Call-Oc "import-image rhpam74-kieserver-openshift:$IMAGE_STREAM_TAG —confirm -n $($PRJ[0])" $True "Error fetching Image Streams."
 
   #Write-Output-Header "Patching the ImageStreams"
-  #oc patch is/rhpam73-businesscentral-openshift --type='json' -p "[{'op': 'replace', 'path': '/spec/tags/0/from/name', 'value': 'registry.access.redhat.com/rhpam-7/rhpam73-businesscentral-openshift:1.0'}]"
-  #oc patch is/rhpam73-kieserver-openshift --type='json' -p "[{'op': 'replace', 'path': '/spec/tags/0/from/name', 'value': 'registry.access.redhat.com/rhpam-7/rhpam73-kieserver-openshift:1.0'}]"
+  #oc patch is/rhpam74-businesscentral-openshift --type='json' -p "[{'op': 'replace', 'path': '/spec/tags/0/from/name', 'value': 'registry.access.redhat.com/rhpam-7/rhpam74-businesscentral-openshift:1.0'}]"
+  #oc patch is/rhpam74-kieserver-openshift --type='json' -p "[{'op': 'replace', 'path': '/spec/tags/0/from/name', 'value': 'registry.access.redhat.com/rhpam-7/rhpam74-kieserver-openshift:1.0'}]"
 
   Write-Output-Header "Importing Templates"
-  Call-Oc "create -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/$OPENSHIFT_PAM7_TEMPLATES_TAG/templates/rhpam73-authoring.yaml" $True "Error importing Template" $True
+  Call-Oc "create -f https://raw.githubusercontent.com/jboss-container-images/rhpam-7-openshift-image/$OPENSHIFT_PAM7_TEMPLATES_TAG/templates/rhpam74-authoring.yaml" $True "Error importing Template" $True
 }
 
 Function Create-Rhn-Secret-For-Pull() {
@@ -272,7 +272,7 @@ Function Create-Application() {
     $IMAGE_STREAM_NAMESPACE=$($PRJ[0])
   }
 
-  $argList = "new-app --template=rhpam73-authoring"`
+  $argList = "new-app --template=rhpam74-authoring"`
       + " -p APPLICATION_NAME=""$ARG_DEMO""" `
       + " -p IMAGE_STREAM_NAMESPACE=""$IMAGE_STREAM_NAMESPACE""" `
       + " -p KIE_ADMIN_USER=""$KIE_ADMIN_USER""" `
