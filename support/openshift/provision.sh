@@ -166,7 +166,7 @@ KIE_SERVER_PWD=kieserver1!
 
 # Version Configuration Parameters
 OPENSHIFT_PAM7_TEMPLATES_TAG=7.5.0.GA
-IMAGE_STREAM_TAG=1.0
+IMAGE_STREAM_TAG=7.5.0
 PAM7_VERSION=75
 
 
@@ -254,8 +254,8 @@ function import_imagestreams_and_templates() {
   runSpinner 10
 
   #  Explicitly import the images. This is to overcome a problem where the image import gets a 500 error from registry.redhat.io when we deploy multiple containers at once.
-  oc import-image rhpam$PAM7_VERSION-businesscentral-openshift:$IMAGE_STREAM_TAG —confirm -n ${PRJ[0]}
-  oc import-image rhpam$PAM7_VERSION-kieserver-openshift:$IMAGE_STREAM_TAG —confirm -n ${PRJ[0]}
+  oc import-image rhpam-businesscentral-rhel8:$IMAGE_STREAM_TAG —confirm -n ${PRJ[0]}
+  oc import-image rhpam-kieserver-rhel8:$IMAGE_STREAM_TAG —confirm -n ${PRJ[0]}
 
   #  echo_header "Patching the ImageStreams"
   #  oc patch is/rhpam74-businesscentral-openshift --type='json' -p '[{"op": "replace", "path": "/spec/tags/0/from/name", "value": "registry.access.redhat.com/rhpam-7/rhpam74-businesscentral-openshift:1.0"}]'
@@ -342,7 +342,7 @@ function create_application() {
 
   # Disable the OpenShift Startup Strategy and revert to the old Controller Strategy
   oc set env dc/$ARG_DEMO-rhpamcentr KIE_WORKBENCH_CONTROLLER_OPENSHIFT_ENABLED=false
-  oc set env dc/$ARG_DEMO-kieserver KIE_SERVER_STARTUP_STRATEGY=ControllerBasedStartupStrategy KIE_SERVER_CONTROLLER_USER=$KIE_SERVER_CONTROLLER_USER KIE_SERVER_CONTROLLER_PWD=$KIE_SERVER_CONTROLLER_PWD KIE_SERVER_CONTROLLER_SERVICE=$ARG_DEMO-rhpamcentr KIE_SERVER_CONTROLLER_PROTOCOL=ws
+  oc set env dc/$ARG_DEMO-kieserver KIE_SERVER_STARTUP_STRATEGY=ControllerBasedStartupStrategy KIE_SERVER_CONTROLLER_USER=$KIE_SERVER_CONTROLLER_USER KIE_SERVER_CONTROLLER_PWD=$KIE_SERVER_CONTROLLER_PWD KIE_SERVER_CONTROLLER_SERVICE=$ARG_DEMO-rhpamcentr KIE_SERVER_CONTROLLER_PROTOCOL=ws KIE_SERVER_ROUTE_NAME=insecure-$ARG_DEMO-kieserver
 
 }
 
