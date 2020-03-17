@@ -7,7 +7,7 @@ clear
 echo
 echo "######################################################################"
 echo "##                                                                  ##"
-echo "##  Setting up the ${DEMO}                                    ##"
+echo "##  Setting up the ${DEMO}                                     ##"
 echo "##                                                                  ##"
 echo "##                                                                  ##"
 echo "##     ####  #   # ####   ###   #   #   #####    #   #              ##"
