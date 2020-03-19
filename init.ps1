@@ -7,7 +7,7 @@ set NOPAUSE=true
 
 Write-Host "######################################################################"
 Write-Host "##                                                                  ##"
-Write-Host "##  Setting up the ${DEMO}            ##"
+Write-Host "##  Setting up the ${DEMO}                                     ##"
 Write-Host "##                                                                  ##"
 Write-Host "##                                                                  ##"
 Write-Host "##     ####  #   # ####   ###   #   #   #####    #   #              ##"
@@ -17,10 +17,10 @@ Write-Host "##     # #   #   # #     #   # #     #   #        # #               
 Write-Host "##     #  #  #   # #     #   # #     #  #     #  #   #              ##"
 Write-Host "##                                                                  ##"
 Write-Host "##  brought to you by,                                              ##"
-Write-Host "##             %AUTHORS%                                             ##"
+Write-Host "##             ${AUTHORS}                                              ##"
 Write-Host "##                                                                  ##"
 Write-Host "##                                                                  ##"
-Write-Host "##  %PROJECT%           ##"
+Write-Host "##  ${PROJECT}         ##"
 Write-Host "##                                                                  ##"
 Write-Host "######################################################################`n"
 
