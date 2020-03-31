@@ -316,6 +316,8 @@ function import_secrets_and_service_account() {
   oc create serviceaccount kieserver-service-account
   oc secrets link --for=mount businesscentral-service-account businesscentral-app-secret
   oc secrets link --for=mount kieserver-service-account kieserver-app-secret
+
+  oc create -f $SCRIPT_DIR/credentials.yaml
 }
 
 function create_application() {
@@ -330,12 +332,7 @@ function create_application() {
   oc new-app --template=rhpam$PAM7_VERSION-authoring \
 			-p APPLICATION_NAME="$ARG_DEMO" \
 			-p IMAGE_STREAM_NAMESPACE="$IMAGE_STREAM_NAMESPACE" \
-			-p KIE_ADMIN_USER="$KIE_ADMIN_USER" \
-			-p KIE_ADMIN_PWD="$KIE_ADMIN_PWD" \
-			-p KIE_SERVER_CONTROLLER_USER="$KIE_SERVER_CONTROLLER_USER" \
-			-p KIE_SERVER_CONTROLLER_PWD="$KIE_SERVER_CONTROLLER_PWD" \
-			-p KIE_SERVER_USER="$KIE_SERVER_USER" \
-			-p KIE_SERVER_PWD="$KIE_SERVER_PWD" \
+			-p CREDENTIALS_SECRET="rhpam-credentials" \
       -p BUSINESS_CENTRAL_HTTPS_SECRET="businesscentral-app-secret" \
       -p KIE_SERVER_HTTPS_SECRET="kieserver-app-secret" \
 			-p BUSINESS_CENTRAL_MEMORY_LIMIT="2Gi"
