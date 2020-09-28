@@ -19,7 +19,7 @@ Follow install output instructions and log in to http://localhost:8080/business-
 Enjoy the installed and configured Red Hat Process Automation Manager 7.
 
 
-Installng on OpenShift Container Platform (CodeReady Containers)
+Installing on OpenShift Container Platform (CodeReady Containers)
 ----------------------------------------------------------------
 Install this demo on your local machine using an OpenShift Container Platform development cluster can be done using 
 CodeReady Continers. It's fully automated and delivers a fully functioning container-native development experience:
@@ -27,7 +27,7 @@ CodeReady Continers. It's fully automated and delivers a fully functioning conta
 [Code Ready Containers Red Hat Process Automation Easy Install](https://gitlab.com/redhatdemocentral/rhcs-rhpam-install-demo)
 
 
-Intalling on any OpenShift Container Platform (generic)
+Installing on any OpenShift Container Platform (generic)
 -------------------------------------------------------
 This demo can be installed on your own version of OpenShift Container Platform. Options and guidance can be found 
 in [openshift support directory README](support/openshift/README.md).
