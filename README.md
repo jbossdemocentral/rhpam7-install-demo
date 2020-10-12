@@ -37,6 +37,8 @@ Supporting Articles
 -------------------
 - [Video - Red Hat Process Automation Manager Install Demo](https://youtu.be/x6U8CiPU9cU)
 
+- [CodeReady Containers - Getting Started with OpenShift 4.5 and Process Automation Tooling](https://dzone.com/articles/codeready-containers-getting-started-with-openshif-1)
+
 - [Getting Started with Red Hat Process Automation Manager 7](https://upload.wikimedia.org/wikipedia/commons/6/67/Learning_Curve_--_Coming_Soon_Placeholder.png)
 
 
