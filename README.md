@@ -16,7 +16,7 @@ Installing on local machine
 
 Follow install output instructions and log in to http://localhost:8080/business-central (u:pamAdmin / p:redhatdm1!)
 
-Enjoy the installed and configured Red Hat Process Automation Manager 7.
+Enjoy the installed and configured Red Hat Process Automation Manager 7. If you need more help, see the [install video](https://youtu.be/x6U8CiPU9cU).
 
 
 Installing on OpenShift Container Platform (CodeReady Containers)
@@ -52,7 +52,9 @@ See the tagged releases for the following versions of the product:
 - v1.2 - Red Hat Process Automation Manager 7.0.2.GA
 - v0.8 - Red Hat Process Automation Manager 7.0.0.ER2
 
-![RHPAM 7](https://raw.githubusercontent.com/jbossdemocentral/rhpam7-install-demo/master/docs/demo-images/rhpam7.png)
+[![RHPAM VIDEO](docs/demo-images/rhpam7-video.png)](https://youtu.be/x6U8CiPU9cU)
 
-![RHPAM 7 CASE](https://raw.githubusercontent.com/jbossdemocentral/rhpam7-install-demo/master/docs/demo-images/rhpam7-case.png)
+![RHPAM 7](docs/demo-images/rhpam7.png)
+
+![RHPAM 7 CASE](docs/demo-images/rhpam7-case.png)
 
