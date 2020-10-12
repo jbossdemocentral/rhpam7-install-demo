@@ -35,6 +35,8 @@ in [openshift support directory README](support/openshift/README.md).
 
 Supporting Articles
 -------------------
+- [Video - Red Hat Process Automation Manager Install Demo](https://youtu.be/x6U8CiPU9cU)
+
 - [Getting Started with Red Hat Process Automation Manager 7](https://upload.wikimedia.org/wikipedia/commons/6/67/Learning_Curve_--_Coming_Soon_Placeholder.png)
 
 
