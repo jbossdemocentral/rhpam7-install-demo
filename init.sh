@@ -11,7 +11,7 @@ SRC_DIR=./installs
 SUPPORT_DIR=./support
 PRJ_DIR=./projects
 VERSION_EAP=7.3.0
-VERSION=7.8.0
+VERSION=7.9.0
 EAP=jboss-eap-$VERSION_EAP.zip
 RHPAM=rhpam-$VERSION-business-central-eap7-deployable.zip
 RHPAM_KIE_SERVER=rhpam-$VERSION-kie-server-ee8.zip
@@ -197,6 +197,16 @@ cp $SUPPORT_DIR/standalone-full.xml $SERVER_CONF/standalone.xml
 echo "  - setup email task notification users..."
 echo
 cp $SUPPORT_DIR/userinfo.properties $SERVER_DIR/business-central.war/WEB-INF/classes/
+
+
+echo "  - setup system property for jpa marshaller"
+echo
+$JBOSS_HOME/bin/jboss-cli.sh <<EOT
+embed-server
+/system-property=org.kie.server.xstream.enabled.packages:add(value="org.drools.persistence.jpa.marshaller.*")
+EOT
+
+
 
 # Add execute permissions to the standalone.sh script.
 echo "  - making sure standalone.sh for server is executable..."
