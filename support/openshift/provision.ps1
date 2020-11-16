@@ -5,7 +5,7 @@ param (
     [string]$user = "",
     [string]${project-suffix} = "",
     [string]${run-verify} = "",
-    [switch]${with-imagestreams} = $false,
+    [switch]${with-imagestreams} = $true,
     [string]${pv-capacity} = "512Mi",
     [switch]$h = $false,
     [switch]$help = $false
@@ -106,9 +106,9 @@ $KIE_SERVER_USER="kieserver"
 $KIE_SERVER_PWD="kieserver1!"
 
 # Version Configuration Parameters
-$OPENSHIFT_PAM7_TEMPLATES_TAG="7.8.0.GA"
-$IMAGE_STREAM_TAG="7.8.0"
-$PAM7_VERSION="78"
+$OPENSHIFT_PAM7_TEMPLATES_TAG="7.9.0.GA"
+$IMAGE_STREAM_TAG="7.9.0"
+$PAM7_VERSION="79"
 
 
 ################################################################################
@@ -285,7 +285,7 @@ Function Create-Application() {
       + " -p CREDENTIALS_SECRET=""rhpam-credentials""" `
       + " -p BUSINESS_CENTRAL_HTTPS_SECRET=""businesscentral-app-secret""" `
       + " -p KIE_SERVER_HTTPS_SECRET=""kieserver-app-secret""" `
-      + " -p BUSINESS_CENTRAL_MEMORY_LIMIT=""2Gi"""
+      + " -p BUSINESS_CENTRAL_MEMORY_LIMIT=""3Gi"""
 
   Call-Oc $argList $True "Error creating application." $True
 

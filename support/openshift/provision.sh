@@ -34,7 +34,7 @@ function usage() {
     echo "   --user [username]         The admin user for the demo projects. mandatory if logged in as system:admin"
     echo "   --project-suffix [suffix] Suffix to be added to demo project names e.g. ci-SUFFIX. If empty, user will be used as suffix."
     echo "   --run-verify              Run verify after provisioning"
-    echo "   --with-imagestreams       Creates the image streams in the project. Useful when required ImageStreams are not available in the 'openshift' namespace and cannot be provisioned in that 'namespace'."
+    echo "   --without-imagestreams    Do not create the image streams in the project. Useful when you already have the ImageStreams available in the 'openshift' namespace."
     echo "   --pv-capacity [capacity]  Capacity of the persistent volume. Defaults to 512Mi as set by the Red Hat Process Automation Manager OpenShift template."
     # TODO support --maven-mirror-url
     echo
@@ -44,7 +44,7 @@ ARG_USERNAME=
 ARG_PROJECT_SUFFIX=
 ARG_COMMAND=
 ARG_RUN_VERIFY=false
-ARG_WITH_IMAGESTREAMS=false
+ARG_WITH_IMAGESTREAMS=true
 ARG_PV_CAPACITY=512Mi
 ARG_DEMO=
 
@@ -115,8 +115,8 @@ while :; do
         --run-verify)
             ARG_RUN_VERIFY=true
             ;;
-        --with-imagestreams)
-            ARG_WITH_IMAGESTREAMS=true
+        --without-imagestreams)
+            ARG_WITH_IMAGESTREAMS=false
             ;;
         --pv-capacity)
             if [ -n "$2" ]; then
@@ -165,9 +165,9 @@ KIE_SERVER_USER=kieserver
 KIE_SERVER_PWD=kieserver1!
 
 # Version Configuration Parameters
-OPENSHIFT_PAM7_TEMPLATES_TAG=7.8.0.GA
-IMAGE_STREAM_TAG=7.8.0
-PAM7_VERSION=78
+OPENSHIFT_PAM7_TEMPLATES_TAG=7.9.0.GA
+IMAGE_STREAM_TAG=7.9.0
+PAM7_VERSION=79
 
 
 ################################################################################
@@ -329,13 +329,23 @@ function create_application() {
     IMAGE_STREAM_NAMESPACE=${PRJ[0]}
   fi
 
+  echo_header "Creating Process Automation Manager 7 Application."
+  echo "new-app --template=rhpam$PAM7_VERSION-authoring "
+  echo "    -p APPLICATION_NAME=\"$ARG_DEMO\" " 
+  echo "    -p IMAGE_STREAM_NAMESPACE=\"$IMAGE_STREAM_NAMESPACE\" "
+  echo "    -p CREDENTIALS_SECRET=\"rhpam-credentials\" "
+  echo "    -p BUSINESS_CENTRAL_HTTPS_SECRET=\"businesscentral-app-secret\" "
+  echo "    -p KIE_SERVER_HTTPS_SECRET=\"kieserver-app-secret\" "
+  echo "    -p BUSINESS_CENTRAL_MEMORY_LIMIT=\"3Gi\""
+
+
   oc new-app --template=rhpam$PAM7_VERSION-authoring \
 			-p APPLICATION_NAME="$ARG_DEMO" \
 			-p IMAGE_STREAM_NAMESPACE="$IMAGE_STREAM_NAMESPACE" \
 			-p CREDENTIALS_SECRET="rhpam-credentials" \
       -p BUSINESS_CENTRAL_HTTPS_SECRET="businesscentral-app-secret" \
       -p KIE_SERVER_HTTPS_SECRET="kieserver-app-secret" \
-			-p BUSINESS_CENTRAL_MEMORY_LIMIT="2Gi"
+			-p BUSINESS_CENTRAL_MEMORY_LIMIT="3Gi"
 
   # Disable the OpenShift Startup Strategy and revert to the old Controller Strategy
   oc set env dc/$ARG_DEMO-rhpamcentr KIE_WORKBENCH_CONTROLLER_OPENSHIFT_ENABLED=false

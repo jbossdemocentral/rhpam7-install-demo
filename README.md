@@ -7,10 +7,9 @@ You can install this project on your own machine or on an OpenShift Container Pl
 
 Installing on local machine
 ---------------------------
-1. [Download and unzip](https://github.com/jbossdemocentral/rhpam7-install-demo/archive/master.zip) 
-   or [clone this repo](https://github.com/jbossdemocentral/rhpam7-install-demo.git).
-
-2. Add products to installs directory, see installs/README for details and links.
+1. [Download and unzip](https://github.com/jbossdemocentral/rhpam7-install-demo/archive/master.zip) or [clone this repo](https://github.com/jbossdemocentral/rhpam7-install-demo.git).
+   
+2. Add products to installs directory, see [installs/README](installs/README) for details and links.
 
 3. Run 'init.sh' or 'init.bat' file. 'init.bat' must be run with Administrative privileges.
 

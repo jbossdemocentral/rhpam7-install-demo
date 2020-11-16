@@ -5,7 +5,7 @@ Project to automate the installation of this product without preconfiguration be
 You can install this project on an OpenShift Container Platform.
 
 
-Intalling on any OpenShift Container Platform (generic)
+Installing on any OpenShift Container Platform (generic)
 -------------------------------------------------------
 This demo can be installed on Red Hat OpenShift in various ways. We'll explain the different options provided.
 
@@ -50,7 +50,7 @@ This installation option will install the Process Automation Manager 7 and Proce
     ---
     **NOTE**
 
-    The `with-imagestreams` parameter installs the Process Automation Manager 7 image streams and templates into the project namespace instead of the `openshift` namespace (for which you need admin rights). If you already have the required image-streams and templates installed in your OpenShift environment in the `openshift` namespace, you can omit the `with-imagestreams` from the setup command.
+    The `without-imagestreams` parameter skips the installation of the Process Automation Manager 7 image streams and templates into the project namespace. If you already have the required image-streams and templates installed in your OpenShift environment in the `openshift` namespace, you can run using the parameter `without-imagestreams` from the setup command.
 
     ---
 
