@@ -23,7 +23,7 @@ Installing on OpenShift Container Platform (CodeReady Containers)
 Install this demo on your local machine using an OpenShift Container Platform development cluster can be done using 
 CodeReady Continers. It's fully automated and delivers a fully functioning container-native development experience:
 
-[Code Ready Containers Red Hat Process Automation Easy Install](https://gitlab.com/redhatdemocentral/rhcs-rhpam-install-demo)
+[Code Ready Containers Red Hat Process Automation Easy Install](https://gitlab.com/redhatdemocentral/crc-rhpam-install-demo)
 
 
 Installing on any OpenShift Container Platform (generic)
