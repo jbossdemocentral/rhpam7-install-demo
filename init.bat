@@ -203,7 +203,7 @@ echo.
 call %JBOSS_HOME%\bin\add-user.bat -a -r ApplicationRealm -u adminUser -p test1234! -ro analyst,admin,manager,user,kie-server,kiemgmt,rest-all --silent
 echo - Management user 'kieserver' password 'kieserver1!' setup...
 echo.
-call %JBOSS_HOME%\bin\add-user.bat -a -r ApplicationRealm -u kieserver -p kieserver1! -ro kie-server --silent
+call %JBOSS_HOME%\bin\add-user.bat -a -r ApplicationRealm -u kieserver -p kieserver1! -ro kie-server,rest-all --silent
 echo - Management user 'caseUser' password 'redhatpam1!' setup...
 echo.
 call %JBOSS_HOME%\bin\add-user.bat -a -r ApplicationRealm -u caseUser -p redhatpam1! -ro user --silent

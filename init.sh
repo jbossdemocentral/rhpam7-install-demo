@@ -176,7 +176,7 @@ $JBOSS_HOME/bin/add-user.sh -a -r ApplicationRealm -u adminUser -p test1234! -ro
 
 echo "  - adding user 'kieserver' with password 'kieserver1!'..."
 echo
-$JBOSS_HOME/bin/add-user.sh -a -r ApplicationRealm -u kieserver -p kieserver1! -ro kie-server --silent
+$JBOSS_HOME/bin/add-user.sh -a -r ApplicationRealm -u kieserver -p kieserver1! -ro kie-server,rest-all --silent
 
 echo "  - adding user 'caseUser' with password 'redhatpam1!'..."
 echo
