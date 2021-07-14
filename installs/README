@@ -1,13 +1,13 @@
 Download the following from http://developers.redhat.com
 
  * Red Hat Enterprise Application Platform archive (jboss-eap-7.3.0.zip) at https://developers.redhat.com/products/eap/download
- * Red Hat Process Automation Manager deployable (rhpam-7.10.0-business-central-eap7-deployable.zip) at https://developers.redhat.com/products/rhpam/download
- * Red Hat Process Automation Manager Process Server (KIE Server) deployable (rhpam-7.10.0-kie-server-ee8.zip) at https://developers.redhat.com/products/rhpam/download
- * Red Hat Process Automation Manager add ons (rhpam-7.10.0-add-ons.zip) at https://developers.redhat.com/products/rhpam/download
+ * Red Hat Process Automation Manager deployable (rhpam-7.11.0-business-central-eap7-deployable.zip) at https://developers.redhat.com/products/rhpam/download
+ * Red Hat Process Automation Manager Process Server (KIE Server) deployable (rhpam-7.11.0-kie-server-ee8.zip) at https://developers.redhat.com/products/rhpam/download
+ * Red Hat Process Automation Manager add ons (rhpam-7.11.0-add-ons.zip) at https://developers.redhat.com/products/rhpam/download
 
 Ensure that this file is executable by running:
 
 chmod +x <path-to-project>/installs/jboss-eap-7.3.0.zip
-chmod +x <path-to-project>/installs/rhpam-7.10.0-business-central-eap7-deployable.zip
-chmod +x <path-to-project>/installs/rhpam-7.10.0-kie-server-ee8.zip
-chmod +x <path-to-project>/installs/rhpam-7.10.0-add-ons.zip
+chmod +x <path-to-project>/installs/rhpam-7.11.0-business-central-eap7-deployable.zip
+chmod +x <path-to-project>/installs/rhpam-7.11.0-kie-server-ee8.zip
+chmod +x <path-to-project>/installs/rhpam-7.11.0-add-ons.zip

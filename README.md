@@ -45,6 +45,7 @@ Released versions
 -----------------
 See the tagged releases for the following versions of the product:
 
+- v1.12 - Red Hat Process Automation Manager 7.11.0.GA
 - v1.11 - Red Hat Process Automation Manager 7.10.0.GA
 - v1.10 - Red Hat Process Automation Manager 7.9.0.GA
 - v1.9 - Red Hat Process Automation Manager 7.8.0.GA
