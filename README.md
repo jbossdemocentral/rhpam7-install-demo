@@ -13,7 +13,7 @@ Installing on local machine
 
 3. Run 'init.sh' or 'init.bat' file. 'init.bat' must be run with Administrative privileges.
 
-Follow install output instructions and log in to http://localhost:8080/business-central (u:pamAdmin / p:redhatdm1!)
+Follow install output instructions and log in to http://localhost:8080/business-central (u:pamAdmin / p:redhatpam1!)
 
 Enjoy the installed and configured Red Hat Process Automation Manager 7. If you need more help, see the [install video](https://youtu.be/x6U8CiPU9cU).
 
