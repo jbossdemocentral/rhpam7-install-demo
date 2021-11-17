@@ -204,6 +204,7 @@ echo
 $JBOSS_HOME/bin/jboss-cli.sh <<EOT
 embed-server
 /system-property=org.kie.server.xstream.enabled.packages:add(value="org.drools.persistence.jpa.marshaller.*")
+/system-property=org.kie.server.persistence.ds:add(value="java:jboss/datasources/ExampleDS")
 EOT
 
 
