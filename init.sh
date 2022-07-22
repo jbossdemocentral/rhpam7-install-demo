@@ -51,7 +51,7 @@ echo "##           # # # ##### # # # ##### #  ## ###   ####            ##"
 echo "##           #   # #   # #  ## #   # #   # #     #  #            ##"
 echo "##           #   # #   # #   # #   # ##### ##### #   #           ##"
 echo "##                                                               ##"
-echo "##  brought to you by, ${AUTHORS}                                ##"
+echo "##  brought to you by, ${AUTHORS}                                  ##"
 echo "##                                                               ##"
 echo "##  ${PROJECT}      ##"
 echo "##                                                               ##"
@@ -164,8 +164,8 @@ fi
 
 echo "  - setting up standalone-full.xml configuration adjustments..."
 echo
-mv $SERVER_CONF/standalone-full.xml $SERVER_CONF/standalone-full.xml.bak
-cp $SUPPORT_DIR/standalone-full.xml $SERVER_CONF/standalone-full.xml
+mv $SERVER_CONF/standalone.xml $SERVER_CONF/standalone.xml.bak
+cp $SUPPORT_DIR/standalone-full.xml $SERVER_CONF/standalone.xml
 
 # Set deployment Case Management.
 touch $JBOSS_HOME/standalone/deployments/rhpam-case-mgmt-showcase.war.dodeploy

@@ -281,7 +281,7 @@
          </audit-logging>
          <security-domains>
             <security-domain name="ApplicationDomain" default-realm="ApplicationRealm" permission-mapper="default-permission-mapper">
-               <realm name="ApplicationRealm" role-decoder="from-roles-attribute" />
+               <realm name="ApplicationRealm" role-decoder="groups-to-roles" />
                <realm name="local" />
             </security-domain>
             <security-domain name="ManagementDomain" default-realm="ManagementRealm" permission-mapper="default-permission-mapper">
@@ -291,9 +291,13 @@
          </security-domains>
          <security-realms>
             <identity-realm name="local" identity="$local" />
-            <filesystem-realm name="ApplicationRealm">
+            <properties-realm name="ApplicationRealm">
+               <users-properties path="application-users.properties" relative-to="jboss.server.config.dir" digest-realm-name="ApplicationRealm" />
+               <groups-properties path="application-roles.properties" relative-to="jboss.server.config.dir" />
+            </properties-realm>
+            <!--<filesystem-realm name="ApplicationRealm">
                <file path="kie-fs-realm-users" relative-to="jboss.server.config.dir" />
-            </filesystem-realm>
+            </filesystem-realm>-->
             <properties-realm name="ManagementRealm">
                <users-properties path="mgmt-users.properties" relative-to="jboss.server.config.dir" digest-realm-name="ManagementRealm" />
                <groups-properties path="mgmt-groups.properties" relative-to="jboss.server.config.dir" />
