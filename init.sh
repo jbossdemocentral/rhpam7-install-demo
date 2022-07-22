@@ -17,6 +17,7 @@ RHPAM=rhpam-$VERSION-business-central-eap7-deployable.zip
 RHPAM_KIE_SERVER=rhpam-$VERSION-kie-server-ee8.zip
 RHPAM_ADDONS=rhpam-$VERSION-add-ons.zip
 RHPAM_CASE=rhpam-$VERSION-case-mgmt-showcase-eap7-deployable.zip
+RHPAM_UPDATE=rhpam-$VERSION-update
 
 # wipe screen.
 clear
@@ -238,3 +239,24 @@ echo "=            [ u:caseSupplier / p:redhatpam1! ]              ="
 echo "=                                                            ="
 echo "=============================================================="
 echo
+
+echo "Red Hat Process Automation Manager update and patch process running now..."
+echo
+unzip -qo $SRC_DIR/$RHPAM_UPDATE.zip -d target
+
+if [ $? -ne 0 ]; then
+	echo
+	echo Error occurred during Red Hat Process Manager Update installation!
+	exit
+fi
+
+cd ./target/$RHPAM_UPDATE
+
+echo "  - patching Business Central..."
+./apply-updates.sh ../jboss-eap-7.4/standalone/deployments/business-central.war rhpam-business-central-eap7-deployable
+
+echo "  - patching KIE Server..."
+./apply-updates.sh ../jboss-eap-7.4/standalone/deployments/kie-server.war rhpam-kie-server-ee8
+
+cd ../../
+rm -r target/$RHPAM_UPDATE
