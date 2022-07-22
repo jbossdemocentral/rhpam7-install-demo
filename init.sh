@@ -1,17 +1,17 @@
-#!/bin/sh 
+#!/bin/sh
 DEMO="Install Demo"
 AUTHORS="Red Hat"
 PROJECT="git@github.com:jbossdemocentral/rhpam7-install-demo.git"
 PRODUCT="Red Hat Process Automation Manager"
-JBOSS_HOME=./target/jboss-eap-7.3
+JBOSS_HOME=./target/jboss-eap-7.4
 SERVER_DIR=$JBOSS_HOME/standalone/deployments
 SERVER_CONF=$JBOSS_HOME/standalone/configuration/
 SERVER_BIN=$JBOSS_HOME/bin
 SRC_DIR=./installs
 SUPPORT_DIR=./support
 PRJ_DIR=./projects
-VERSION_EAP=7.3.0
-VERSION=7.11.0
+VERSION_EAP=7.4.0
+VERSION=7.12.0
 EAP=jboss-eap-$VERSION_EAP.zip
 RHPAM=rhpam-$VERSION-business-central-eap7-deployable.zip
 RHPAM_KIE_SERVER=rhpam-$VERSION-kie-server-ee8.zip
@@ -19,13 +19,13 @@ RHPAM_ADDONS=rhpam-$VERSION-add-ons.zip
 RHPAM_CASE=rhpam-$VERSION-case-mgmt-showcase-eap7-deployable.zip
 
 # wipe screen.
-clear 
+clear
 
 echo
 echo "###################################################################"
-echo "##                                                               ##"   
+echo "##                                                               ##"
 echo "##  Setting up the                                               ##"
-echo "##                                                               ##"   
+echo "##                                                               ##"
 echo "##             ####  ##### ####     #   #  ###  #####            ##"
 echo "##             #   # #     #   #    #   # #   #   #              ##"
 echo "##             ####  ###   #   #    ##### #####   #              ##"
@@ -49,15 +49,15 @@ echo "##           ## ## #   # ##  # #   # #     #     #   #           ##"
 echo "##           # # # ##### # # # ##### #  ## ###   ####            ##"
 echo "##           #   # #   # #  ## #   # #   # #     #  #            ##"
 echo "##           #   # #   # #   # #   # ##### ##### #   #           ##"
-echo "##                                                               ##"   
+echo "##                                                               ##"
 echo "##  brought to you by, ${AUTHORS}                            ##"
-echo "##                                                               ##"   
+echo "##                                                               ##"
 echo "##  ${PROJECT}      ##"
-echo "##                                                               ##"   
+echo "##                                                               ##"
 echo "###################################################################"
 echo
 
-# make some checks first before proceeding.	
+# make some checks first before proceeding.
 if [ -r $SUPPORT_DIR ] || [ -L $SUPPORT_DIR ]; then
         echo "Support dir is presented..."
         echo
@@ -138,7 +138,7 @@ fi
 
 echo "Red Hat Process Automation Manager Kie Server installation running now..."
 echo
-unzip -qo $SRC_DIR/$RHPAM_KIE_SERVER  -d $JBOSS_HOME/standalone/deployments 
+unzip -qo $SRC_DIR/$RHPAM_KIE_SERVER  -d $JBOSS_HOME/standalone/deployments
 
 if [ $? -ne 0 ]; then
 	echo
@@ -238,4 +238,3 @@ echo "=            [ u:caseSupplier / p:redhatpam1! ]              ="
 echo "=                                                            ="
 echo "=============================================================="
 echo
-
