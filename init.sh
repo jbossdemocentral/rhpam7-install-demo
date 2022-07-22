@@ -51,7 +51,7 @@ echo "##           # # # ##### # # # ##### #  ## ###   ####            ##"
 echo "##           #   # #   # #  ## #   # #   # #     #  #            ##"
 echo "##           #   # #   # #   # #   # ##### ##### #   #           ##"
 echo "##                                                               ##"
-echo "##  brought to you by, ${AUTHORS}                            ##"
+echo "##  brought to you by, ${AUTHORS}                                ##"
 echo "##                                                               ##"
 echo "##  ${PROJECT}      ##"
 echo "##                                                               ##"
@@ -162,8 +162,18 @@ if [ $? -ne 0 ]; then
 	exit
 fi
 
+echo "  - setting up standalone-full.xml configuration adjustments..."
+echo
+mv $SERVER_CONF/standalone-full.xml $SERVER_CONF/standalone-full.xml.bak
+cp $SUPPORT_DIR/standalone-full.xml $SERVER_CONF/standalone-full.xml
+
 # Set deployment Case Management.
 touch $JBOSS_HOME/standalone/deployments/rhpam-case-mgmt-showcase.war.dodeploy
+
+# User creation docs: https://access.redhat.com/documentation/en-us/red_hat_process_automation_manager/7.12/html/installing_and_configuring_red_hat_process_automation_manager/assembly_installing-on-eap-deployable_install-on-eap#eap-users-create-proc_install-on-eap
+#echo "  - enabling demo accounts role setup..."
+#$JBOSS_HOME/bin/elytron-tool.sh filesystem-realm --users-file application-users.properties --roles-file application-roles.properties --output-location kie-fs-realm-users
+#$JBOSS_HOME/bin/jboss-cli.sh --file=$SUPPORT_DIR/user_data.cli
 
 echo "  - enabling demo accounts role setup..."
 echo
@@ -191,9 +201,6 @@ echo "  - adding user 'caseSupplier' with password 'redhatpam1!'..."
 echo
 $JBOSS_HOME/bin/add-user.sh -a -r ApplicationRealm -u caseSupplier -p redhatpam1! -ro user,supplier --silent
 
-echo "  - setting up standalone.xml configuration adjustments..."
-echo
-cp $SUPPORT_DIR/standalone-full.xml $SERVER_CONF/standalone.xml
 
 echo "  - setup email task notification users..."
 echo
@@ -216,7 +223,7 @@ chmod u+x $JBOSS_HOME/bin/standalone.sh
 
 echo "=============================================================="
 echo "=                                                            ="
-echo "=  $PRODUCT $VERSION setup complete.  ="
+echo "=  $PRODUCT $VERSION setup complete. ="
 echo "=                                                            ="
 echo "=  Start $PRODUCT with:            ="
 echo "=                                                            ="
@@ -240,23 +247,23 @@ echo "=                                                            ="
 echo "=============================================================="
 echo
 
-echo "Red Hat Process Automation Manager update and patch process running now..."
-echo
-unzip -qo $SRC_DIR/$RHPAM_UPDATE.zip -d target
+# echo "Red Hat Process Automation Manager update and patch process running now..."
+# echo
+# unzip -qo $SRC_DIR/$RHPAM_UPDATE.zip -d target
 
-if [ $? -ne 0 ]; then
-	echo
-	echo Error occurred during Red Hat Process Manager Update installation!
-	exit
-fi
+# if [ $? -ne 0 ]; then
+# 	echo
+# 	echo Error occurred during Red Hat Process Manager Update installation!
+# 	exit
+# fi
 
-cd ./target/$RHPAM_UPDATE
+# cd ./target/$RHPAM_UPDATE
 
-echo "  - patching Business Central..."
-./apply-updates.sh ../jboss-eap-7.4/standalone/deployments/business-central.war rhpam-business-central-eap7-deployable
+# echo "  - patching Business Central..."
+# ./apply-updates.sh ../jboss-eap-7.4/standalone/deployments/business-central.war rhpam-business-central-eap7-deployable
 
-echo "  - patching KIE Server..."
-./apply-updates.sh ../jboss-eap-7.4/standalone/deployments/kie-server.war rhpam-kie-server-ee8
+# echo "  - patching KIE Server..."
+# ./apply-updates.sh ../jboss-eap-7.4/standalone/deployments/kie-server.war rhpam-kie-server-ee8
 
-cd ../../
-rm -r target/$RHPAM_UPDATE
+# cd ../../
+# rm -r target/$RHPAM_UPDATE
