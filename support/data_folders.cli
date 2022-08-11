@@ -1,0 +1,8 @@
+# These properties define where the various data directories are located
+
+embed-server --std-out=echo
+
+/system-property=org.uberfire.nio.git.dir:add(value="${jboss.server.data.dir}")
+/system-property=org.kie.server.repo:add(value="${jboss.server.data.dir}")
+/system-property=org.uberfire.metadata.index.dir:add(value="${jboss.server.data.dir}")
+/system-property=org.guvnor.m2repo.dir:add(value="${jboss.server.data.dir}")

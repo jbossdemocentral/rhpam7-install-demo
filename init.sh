@@ -1,6 +1,5 @@
-#!/bin/sh
+#!/bin/bash
 DEMO="Install Demo"
-AUTHORS="Red Hat"
 PROJECT="git@github.com:jbossdemocentral/rhpam7-install-demo.git"
 PRODUCT="Red Hat Process Automation Manager"
 JBOSS_HOME=./target/jboss-eap-7.4
@@ -11,8 +10,10 @@ SRC_DIR=./installs
 SUPPORT_DIR=./support
 PRJ_DIR=./projects
 VERSION_EAP=7.4.0
-VERSION=7.12.1
+VERSION_EAP_PATCH=7.4.6
+VERSION=7.13.0
 EAP=jboss-eap-$VERSION_EAP.zip
+EAP_PATCH=jboss-eap-$VERSION_EAP_PATCH-patch.zip
 RHPAM=rhpam-$VERSION-business-central-eap7-deployable.zip
 RHPAM_KIE_SERVER=rhpam-$VERSION-kie-server-ee8.zip
 RHPAM_ADDONS=rhpam-$VERSION-add-ons.zip
@@ -51,16 +52,48 @@ echo "##           # # # ##### # # # ##### #  ## ###   ####            ##"
 echo "##           #   # #   # #  ## #   # #   # #     #  #            ##"
 echo "##           #   # #   # #   # #   # ##### ##### #   #           ##"
 echo "##                                                               ##"
-echo "##  brought to you by, ${AUTHORS}                                  ##"
 echo "##                                                               ##"
 echo "##  ${PROJECT}      ##"
 echo "##                                                               ##"
 echo "###################################################################"
 echo
 
-# make some checks first before proceeding.
+# Validate that the system is ready for installation.
+echo "Testing Java runtime engine (JRE) availability..."
+if type -p java; then
+    echo "  - Java executable found in PATH"
+    export _java=java
+elif [[ -n "$JAVA_HOME" ]] && [[ -x "$JAVA_HOME/bin/java" ]];  then
+    echo "  - Java executable found in JAVA_HOME"  
+    export _java="$JAVA_HOME/bin/java"
+else
+    echo "No java runtine availabie!"
+	echo "Please configure your system path and $JAVA_HOME environment before continuing."
+	echo
+	exit
+fi
+
+echo "Testing Java version..."
+if [[ "$_java" ]]; then
+    export _java_version=$("$_java" -version 2>&1 | awk -F '"' '/version/ {print $2}')
+	echo "  - JAVA is version ${_java_version}"
+	# See: https://stackoverflow.com/a/7335524
+	export _java_version_numeric=$(echo "$_java_version" | awk -F. '{printf("%03d%03d",$1,$2);}')
+    if [ $_java_version_numeric -ge 001008 ] && [ $_java_version_numeric -le 011000 ]  ; then
+        echo "  - Java version is compatible with RHPAM"
+		echo
+    else         
+        echo "  - Java version is incompatible with RHPAM!"
+		echo "    Please configure your Java environment before continuing with installation"
+		echo "    More information at https://access.redhat.com/articles/3405381"
+		echo
+		exit
+    fi
+fi
+
+# Verify that the support directory is available at the expected path
 if [ -r $SUPPORT_DIR ] || [ -L $SUPPORT_DIR ]; then
-        echo "Support dir is presented..."
+        echo "Support dir is available..."
         echo
 else
         echo "$SUPPORT_DIR wasn't found. Please make sure to run this script inside the demo directory."
@@ -69,31 +102,41 @@ else
 fi
 
 if [ -r $SRC_DIR/$EAP ] || [ -L $SRC_DIR/$EAP ]; then
-	echo "Product EAP sources are present..."
-	echo
+	echo "EAP product sources are downloaded and present..."
 else
-	echo "Need to download $EAP package from https://developers.redhat.com/products/eap/download"
-	echo "and place it in the $SRC_DIR directory to proceed..."
+	echo "Product sources for $EAP package not found."
+	echo "Please follow the download instructions in README.md,"
+	echo "found in the $SRC_DIR directory to proceed..."
+	echo
+	exit
+fi
+
+if [ -r $SRC_DIR/$EAP_PATCH ] || [ -L $SRC_DIR/$EAP_PATCH ]; then
+	echo "EAP patch sources are downloaded and present..."
+else
+	echo "Product sources for $EAP_PATCH package not found."
+	echo "Please follow the download instructions in README.md,"
+	echo "found in the $SRC_DIR directory to proceed..."
 	echo
 	exit
 fi
 
 if [ -r $SRC_DIR/$RHPAM ] || [ -L $SRC_DIR/$RHPAM ]; then
-	echo "Product Red Hat Process Automation Manager sources are present..."
-	echo
+	echo "RHPAM product sources are downloaded and present..."
 else
-	echo "Need to download $RHPAM package from https://developers.redhat.com/products/rhpam/download"
-	echo "and place it in the $SRC_DIR directory to proceed..."
+	echo "Product sources for $RHPAM package not found."
+	echo "Please follow the download instructions in README.md,"
+	echo "found in the $SRC_DIR directory to proceed..."
 	echo
 	exit
 fi
 
 if [ -r $SRC_DIR/$RHPAM_KIE_SERVER ] || [ -L $SRC_DIR/$RHPAM_KIE_SERVER ]; then
 	echo "Product Red Hat Process Automation Manager KIE Server sources are present..."
-	echo
 else
-	echo "Need to download $RHPAM_KIE_SERVER package from https://developers.redhat.com/products/rhpam/download"
-	echo "and place it in the $SRC_DIR directory to proceed..."
+	echo "Product sources for $RHPAM_KIE_SERVER package not found."
+	echo "Please follow the download instructions in README.md,"
+	echo "found in the $SRC_DIR directory to proceed..."
 	echo
 	exit
 fi
@@ -102,44 +145,58 @@ if [ -r $SRC_DIR/$RHPAM_ADDONS ] || [ -L $SRC_DIR/$RHPAM_ADDONS ]; then
 	echo "Product Red Hat Process Automation Manager Case Management sources are present..."
 	echo
 else
-	echo "Need to download $RHPAM_ADDONS package from https://developers.redhat.com/products/rhpam/download"
-	echo "and place it in the $SRC_DIR directory to proceed..."
+	echo "Product sources for $RHPAM_ADDONS package not found."
+	echo "Please follow the download instructions in README.md,"
+	echo "found in the $SRC_DIR directory to proceed..."
 	echo
 	exit
 fi
 
 # Remove the old JBoss instance, if it exists.
 if [ -x $JBOSS_HOME ]; then
-		echo "  - removing existing JBoss product..."
+		echo "Removing existing installation from $JBOSS_HOME..."
 		echo
 		rm -rf $JBOSS_HOME
 fi
 
-# Installation.
-echo "JBoss EAP installation running now..."
+# JBoss EAP Installation.
+echo "Extracting JBoss EAP ${VERSION_EAP}..."
 echo
 mkdir -p ./target
 unzip -qo $SRC_DIR/$EAP -d target
 
 if [ $? -ne 0 ]; then
 	echo
-	echo Error occurred during JBoss EAP installation!
+	echo Error occurred during JBoss EAP extraction!
 	exit
 fi
 
-echo "Red Hat Process Automation Manager installation running now..."
+echo "Patching the JBoss EAP installation to ${VERSION_EAP_PATCH}..."
+echo
+$JBOSS_HOME/bin/jboss-cli.sh "patch apply $SRC_DIR/jboss-eap-7.4.6-patch.zip"
+echo
+
+if [ $? -ne 0 ]; then
+	echo
+	echo Error occurred while patching JBoss EAP!
+	exit
+fi
+
+# RHPAM Installation.
+echo "Extracting Red Hat Process Automation Manager..."
 echo
 unzip -qo $SRC_DIR/$RHPAM -d target
 
 if [ $? -ne 0 ]; then
 	echo
-	echo Error occurred during Red Hat Process Manager installation!
+	echo Error occurred during Red Hat Process Manager extraction!
 	exit
 fi
 
-echo "Red Hat Process Automation Manager Kie Server installation running now..."
+echo "Extracting Red Hat Process Automation Manager - Kie Server..."
 echo
 unzip -qo $SRC_DIR/$RHPAM_KIE_SERVER  -d $JBOSS_HOME/standalone/deployments
+touch $JBOSS_HOME/standalone/deployments/kie-server.war.dodeploy
 
 if [ $? -ne 0 ]; then
 	echo
@@ -147,14 +204,12 @@ if [ $? -ne 0 ]; then
 	exit
 fi
 
-# Set deployment Kie Server.
-touch $JBOSS_HOME/standalone/deployments/kie-server.war.dodeploy
-
-echo "Red Hat Process Automation Manager Case Management installation running now..."
+echo "Extracting Red Hat Process Automation Manager - Case Management Showcase..."
 echo
 unzip -qo $SRC_DIR/$RHPAM_ADDONS $RHPAM_CASE -d $SRC_DIR
 unzip -qo $SRC_DIR/$RHPAM_CASE -d target
 rm $SRC_DIR/$RHPAM_CASE
+touch $JBOSS_HOME/standalone/deployments/rhpam-case-mgmt-showcase.war.dodeploy
 
 if [ $? -ne 0 ]; then
 	echo
@@ -162,59 +217,50 @@ if [ $? -ne 0 ]; then
 	exit
 fi
 
-echo "  - setting up standalone-full.xml configuration adjustments..."
+echo "  - setting up standalone.xml configuration adjustments..."
 echo
-mv $SERVER_CONF/standalone.xml $SERVER_CONF/standalone.xml.bak
-cp $SUPPORT_DIR/standalone-full.xml $SERVER_CONF/standalone.xml
+mv $SERVER_CONF/standalone.xml $SERVER_CONF/standalone-original.xml
+cp $SERVER_CONF/standalone-full.xml $SERVER_CONF/standalone.xml
 
-# Set deployment Case Management.
-touch $JBOSS_HOME/standalone/deployments/rhpam-case-mgmt-showcase.war.dodeploy
-
-# User creation docs: https://access.redhat.com/documentation/en-us/red_hat_process_automation_manager/7.12/html/installing_and_configuring_red_hat_process_automation_manager/assembly_installing-on-eap-deployable_install-on-eap#eap-users-create-proc_install-on-eap
-#echo "  - enabling demo accounts role setup..."
-#$JBOSS_HOME/bin/elytron-tool.sh filesystem-realm --users-file application-users.properties --roles-file application-roles.properties --output-location kie-fs-realm-users
-#$JBOSS_HOME/bin/jboss-cli.sh --file=$SUPPORT_DIR/user_data.cli
-
-echo "  - enabling demo accounts role setup..."
+echo "  - setting up data storage folders..."
 echo
-echo "  - adding user 'pamAdmin' with password 'redhatpam1!'..."
+$JBOSS_HOME/bin/jboss-cli.sh --file=$SUPPORT_DIR/data_folders.cli
 echo
-$JBOSS_HOME/bin/add-user.sh -a -r ApplicationRealm -u pamAdmin -p redhatpam1! -ro analyst,admin,manager,user,kie-server,kiemgmt,rest-all --silent
 
-echo "  - adding user 'adminUser' with password 'test1234!'..."
+echo "  - enabling the KIE Server to be managed by Business Central..."
 echo
-$JBOSS_HOME/bin/add-user.sh -a -r ApplicationRealm -u adminUser -p test1234! -ro analyst,admin,manager,user,kie-server,kiemgmt,rest-all --silent
-
-echo "  - adding user 'kieserver' with password 'kieserver1!'..."
+$JBOSS_HOME/bin/jboss-cli.sh --file=$SUPPORT_DIR/managed_kie.cli
 echo
-$JBOSS_HOME/bin/add-user.sh -a -r ApplicationRealm -u kieserver -p kieserver1! -ro kie-server,rest-all --silent
 
-echo "  - adding user 'caseUser' with password 'redhatpam1!'..."
+# Create our demo user accounts
+echo "  - setting up demo user accounts and roles..."
 echo
-$JBOSS_HOME/bin/add-user.sh -a -r ApplicationRealm -u caseUser -p redhatpam1! -ro user --silent
-
-echo "  - adding user 'caseManager' with password 'redhatpam1!'..."
+# Optional - uncomment the line below to use the file system instead of property files
+# $JBOSS_HOME/bin/elytron-tool.sh filesystem-realm --users-file application-users.properties --roles-file application-roles.properties --output-location kie-fs-realm-users
+$JBOSS_HOME/bin/jboss-cli.sh --file=$SUPPORT_DIR/user_data.cli
 echo
-$JBOSS_HOME/bin/add-user.sh -a -r ApplicationRealm -u caseManager -p redhatpam1! -ro user,manager --silent
 
-echo "  - adding user 'caseSupplier' with password 'redhatpam1!'..."
-echo
-$JBOSS_HOME/bin/add-user.sh -a -r ApplicationRealm -u caseSupplier -p redhatpam1! -ro user,supplier --silent
+# Setting up Setup LDAP based authentication in JBoss EAP 7.1 or later using Elytron 
+# See https://access.redhat.com/solutions/3220741
 
+# TODO
 
-echo "  - setup email task notification users..."
+# Elytron Failover Realm allows to failover the Identity Lookup to another Identity Store in case of a failure
+# See https://access.redhat.com/solutions/6290451
+
+# TODO
+
+echo "  - provisioning email task notification users..."
 echo
 cp $SUPPORT_DIR/userinfo.properties $SERVER_DIR/business-central.war/WEB-INF/classes/
-
 
 echo "  - setup system property for jpa marshaller"
 echo
 $JBOSS_HOME/bin/jboss-cli.sh <<EOT
-embed-server
+embed-server --std-out=echo
 /system-property=org.kie.server.xstream.enabled.packages:add(value="org.drools.persistence.jpa.marshaller.*")
 EOT
-
-
+echo
 
 # Add execute permissions to the standalone.sh script.
 echo "  - making sure standalone.sh for server is executable..."
@@ -237,6 +283,7 @@ echo "=                                                            ="
 echo "=    Log in: [ u:pamAdmin / p:redhatpam1! ]                  ="
 echo "=                                                            ="
 echo "=  http://localhost:8080/rhpam-case-mgmt-showcase            ="
+echo "=  http://localhost:8080/kie-server/docs                     =" 
 echo "=                                                            ="
 echo "=    Others:                                                 ="
 echo "=            [ u:kieserver / p:kieserver1! ]                 ="
@@ -246,24 +293,3 @@ echo "=            [ u:caseSupplier / p:redhatpam1! ]              ="
 echo "=                                                            ="
 echo "=============================================================="
 echo
-
-# echo "Red Hat Process Automation Manager update and patch process running now..."
-# echo
-# unzip -qo $SRC_DIR/$RHPAM_UPDATE.zip -d target
-
-# if [ $? -ne 0 ]; then
-# 	echo
-# 	echo Error occurred during Red Hat Process Manager Update installation!
-# 	exit
-# fi
-
-# cd ./target/$RHPAM_UPDATE
-
-# echo "  - patching Business Central..."
-# ./apply-updates.sh ../jboss-eap-7.4/standalone/deployments/business-central.war rhpam-business-central-eap7-deployable
-
-# echo "  - patching KIE Server..."
-# ./apply-updates.sh ../jboss-eap-7.4/standalone/deployments/kie-server.war rhpam-kie-server-ee8
-
-# cd ../../
-# rm -r target/$RHPAM_UPDATE

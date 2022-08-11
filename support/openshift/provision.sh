@@ -165,9 +165,9 @@ KIE_SERVER_USER=kieserver
 KIE_SERVER_PWD=kieserver1!
 
 # Version Configuration Parameters
-OPENSHIFT_PAM7_TEMPLATES_TAG=7.11.0.GA
-IMAGE_STREAM_TAG=7.11.0
-PAM7_VERSION=711
+OPENSHIFT_PAM7_TEMPLATES_TAG=7.13.0.GA
+IMAGE_STREAM_TAG=7.13.0
+PAM7_VERSION=713
 
 
 ################################################################################

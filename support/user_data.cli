@@ -1,34 +1,36 @@
 # See RHPAM docs for more information about this file:
-# https://access.redhat.com/documentation/en-us/red_hat_process_automation_manager/7.12/html/installing_and_configuring_red_hat_process_automation_manager/assembly_installing-on-eap-deployable_install-on-eap#eap-users-create-proc_install-on-eap
+# https://access.redhat.com/documentation/en-us/red_hat_process_automation_manager/7.13/html/installing_and_configuring_red_hat_process_automation_manager/assembly_installing-on-eap-deployable_install-on-eap#eap-users-create-proc_install-on-eap
+#
+# Note - there is a bug in the docs where passwords are enclosed by single quotes (e.g. password='redhatpam1!'). 
+# This is incorrect, the quotes must be removed in the CLI commands.
 
 embed-server --std-out=echo
 
-echo adding user 'pamAdmin' with password 'redhatpam1!'
-/subsystem=elytron/filesystem-realm=ApplicationRealm:add-identity(identity=adminUser)
-/subsystem=elytron/filesystem-realm=ApplicationRealm:set-password(identity=adminUser, clear={password='redhatpam1!'})
-/subsystem=elytron/filesystem-realm=ApplicationRealm:add-identity-attribute(identity=adminUser, name=role, value=[analyst,admin,manager,user,kie-server,kiemgmt,rest-all])
+batch
 
-# echo adding user 'adminUser' with password 'test1234!'
-# /subsystem=elytron/filesystem-realm=ApplicationRealm:add-identity(identity=adminUser)
-# /subsystem=elytron/filesystem-realm=ApplicationRealm:set-password(identity=adminUser, clear={password='test1234'})
-# /subsystem=elytron/filesystem-realm=ApplicationRealm:add-identity-attribute(identity=adminUser, name=role, value=[analyst,admin,manager,user,kie-server,kiemgmt,rest-all])
+echo Adding user: pamAdmin
+/subsystem=elytron/filesystem-realm=ApplicationRealm:add-identity(identity=pamAdmin)
+/subsystem=elytron/filesystem-realm=ApplicationRealm:set-password(identity=pamAdmin, clear={password=redhatpam1!})
+/subsystem=elytron/filesystem-realm=ApplicationRealm:add-identity-attribute(identity=pamAdmin, name=role, value=[analyst,admin,manager,user,kie-server,kiemgmt,rest-all])
 
-echo adding user 'kieserver' with password 'kieserver1!'
+echo Adding user: kieserver
 /subsystem=elytron/filesystem-realm=ApplicationRealm:add-identity(identity=kieserver)
-/subsystem=elytron/filesystem-realm=ApplicationRealm:set-password(identity=kieserver, clear={password='kieserver1!'})
+/subsystem=elytron/filesystem-realm=ApplicationRealm:set-password(identity=kieserver, clear={password=kieserver1!})
 /subsystem=elytron/filesystem-realm=ApplicationRealm:add-identity-attribute(identity=kieserver, name=role, value=[kie-server,rest-all])
 
-echo adding user 'caseUser' with password 'redhatpam1!'
+echo Adding user: caseUser
 /subsystem=elytron/filesystem-realm=ApplicationRealm:add-identity(identity=caseUser)
-/subsystem=elytron/filesystem-realm=ApplicationRealm:set-password(identity=caseUser, clear={password='redhatpam1!'})
+/subsystem=elytron/filesystem-realm=ApplicationRealm:set-password(identity=caseUser, clear={password=redhatpam1!})
 /subsystem=elytron/filesystem-realm=ApplicationRealm:add-identity-attribute(identity=caseUser, name=role, value=[user])
 
-echo adding user 'caseManager' with password 'redhatpam1!'
+echo Adding user: caseManager
 /subsystem=elytron/filesystem-realm=ApplicationRealm:add-identity(identity=caseManager)
-/subsystem=elytron/filesystem-realm=ApplicationRealm:set-password(identity=caseManager, clear={password='redhatpam1!'})
+/subsystem=elytron/filesystem-realm=ApplicationRealm:set-password(identity=caseManager, clear={password=redhatpam1!})
 /subsystem=elytron/filesystem-realm=ApplicationRealm:add-identity-attribute(identity=caseManager, name=role, value=[user,manager])
 
-echo adding user 'caseSupplier' with password 'redhatpam1!'
+echo Adding user: caseSupplier
 /subsystem=elytron/filesystem-realm=ApplicationRealm:add-identity(identity=caseSupplier)
-/subsystem=elytron/filesystem-realm=ApplicationRealm:set-password(identity=caseSupplier, clear={password='redhatpam1!'})
+/subsystem=elytron/filesystem-realm=ApplicationRealm:set-password(identity=caseSupplier, clear={password=redhatpam1!})
 /subsystem=elytron/filesystem-realm=ApplicationRealm:add-identity-attribute(identity=caseSupplier, name=role, value=[user,supplier])
+
+run-batch
