@@ -2,7 +2,7 @@
 /.dockerignore
 /Dockerfile
 /.index
-/.niogit
+/.niogit*
 /.security
 /.kie-wb-playground
 .DS_STORE
